@@ -1,0 +1,14 @@
+<div class="authorization">
+    <div class="container" ng-controller = "authorizationController">
+        <div class="div-error" id="processError">{{processError()}}</div>
+        <div class="div-error" ng-show="pay">Вы не можете войти в систему, так как не произведена оплата</div>
+        <form action="j_spring_security_check" method="POST" id="formID" ng-submit="authorization()">
+            <div class="div-error" id="loginError"></div>
+            <input type="text" class="form-control" placeholder="Ваш логин" id="j_username" name="j_username" validate="validateUsername" errorLabel="#loginError" data-ng-model="username"/>
+            <div class="div-error" id="passwordError"></div>
+            <input type="password" class="form-control" placeholder="Ваш пароль" id="j_password" name="j_password" validate="validatePassword" errorLabel="#passwordError" data-ng-model="password"/>
+            <button type="button" class="btn btn-primary" ng-click="authorization.doClick()"> Войти</button>
+            <!--<button type="submit" class="btn btn-primary"> Войти</button>-->
+        </form>
+    </div>
+</div>

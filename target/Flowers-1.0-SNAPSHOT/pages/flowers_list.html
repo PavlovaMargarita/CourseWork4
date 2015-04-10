@@ -1,0 +1,58 @@
+<div class="contact-list" ng-controller="flowerListController">
+
+    <div class="page-title">
+        <h2>Список цветов</h2>
+        <hr>
+    </div>
+
+    <br/>
+    <br/>
+    <br/>
+    <table class="table" id="table">
+        <thead>
+        <tr class="warning">
+            <th></th>
+            <th>Фото</th>
+            <th>Название</th>
+            <th>Стоимость за 1шт.</th>
+            <th>Количество</th>
+            <th>Стоимость ...</th>
+        </tr>
+        </thead>
+        <tr data-ng-repeat="flower in flowers" >
+            <td> <input type="checkbox" ng-click="check((currentPage-1)*recordsOnPage + $index)"> </td>
+            <td>здесь будет картинка</td>
+            <td> {{flower.description}}</td>
+            <td> {{flower.cost}} </td>
+            <td> <input type="text" ng-readonly="checkInfo[(currentPage-1)*recordsOnPage + $index].isChecked"></td>
+            <td></td>
+        </tr>
+    </table>
+
+    <!--постраничная навигация-->
+    <div class="page-menu" id="pagination">
+        <ul class="pagination">
+            <li ng-show="currentPage == 1" class="disabled"><a href="">Первая</a></li>
+            <li ng-show="currentPage == 1" class="disabled"><a href="">&laquo;</a></li>
+            <li ng-show="currentPage != 1" ng-class="isFirstDisabled()"><a href="javascript:void(0)"
+                                                                           ng-click="getRecords.doClick(1)">Первая</a>
+            </li>
+            <li ng-show="currentPage != 1" ng-class="isPrevDisabled()"><a href="javascript:void(0)"
+                                                                          ng-click="getRecords.doClick(currentPage-1)">&laquo;</a>
+            </li>
+
+            <li ng-repeat="i in range" ng-class="{active : currentPage == i}" id="pagination{{i}}">
+                <a href="javascript:void(0)" ng-click="getRecords.doClick(i)">{{i}}</a>
+            </li>
+
+            <li ng-show="currentPage != totalPages" ng-class="isNextDisabled()"><a href="javascript:void(0)"
+                                                                                   ng-click="getRecords.doClick(currentPage+1)">&raquo;</a>
+            </li>
+            <li ng-show="currentPage != totalPages" ng-class="isLastDisabled()"><a href="javascript:void(0)"
+                                                                                   ng-click="getRecords.doClick(totalPages)">Последняя</a>
+            </li>
+            <li ng-show="currentPage == totalPages" class="disabled"><a href="">&raquo;</a></li>
+            <li ng-show="currentPage == totalPages" class="disabled"><a href="">Последняя</a></li>
+        </ul>
+    </div>
+</div>

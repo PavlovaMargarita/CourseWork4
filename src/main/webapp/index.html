@@ -1,0 +1,101 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" href="css/jquery-ui.css">
+
+    <script type="text/javascript" src="script-lib/jquery.min.js"></script>
+    <script type="text/javascript" src="script-lib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="script-lib/angular.min.js"></script>
+    <script type="text/javascript" src="script-lib/angular-cookies.js"></script>
+    <script type="text/javascript" src="script-lib/angular-route.js"></script>
+
+    <script type="text/javascript" src="script/app.js"></script>
+    <script type="text/javascript" src="script/controller/authorization.js"></script>
+    <script type="text/javascript" src="script/controller/order.js"></script>
+    <script type="text/javascript" src="script/validator.js"></script>
+    <script type="text/javascript" src="script/controller/user.js"></script>
+    <script type="text/javascript" src="script/directive/checklist-model.js"></script>
+    <script type="text/javascript" src="script/controller/flower.js"></script>
+    <!--<script type="text/javascript" src="script-lib/jQuery.js"></script>-->
+
+    <script type="text/javascript" src="script-lib/jquery-ui.js"></script>
+    <script type="text/javascript" src="script-lib/angular-file-upload-shim.min.js"></script>
+    <script type="text/javascript" src="script-lib/angular-file-upload.min.js"></script>
+
+    <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>-->
+    <!--<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>-->
+    <script type="text/javascript" src="script-lib/bootstrap-modal.js"></script>
+    <!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>-->
+    <!--<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.0.js"></script>-->
+    <script type="text/javascript" src="script-lib/test.js"></script>
+    <script type="text/javascript" src="script/vacancyValidator.js"></script>
+
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.0.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body ng-app="EmployeeService">
+<header>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
+                <ul class="nav navbar-nav">
+                    <li ng-show="hasAuthority(['ROLE_CONFIRMATION_MANAGER', 'ROLE_HANDLER_MANAGER', 'ROLE_DELIVER_MANAGER'])"><a href="#orderList">Список заказов</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav">
+                    <li ng-show="hasAuthority(['ROLE_CONFIRMATION_MANAGER', 'ROLE_HANDLER_MANAGER', 'ROLE_DELIVER_MANAGER'])"><a href="#userList">Список пользователей</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li ng-show="hasAuthority(['ROLE_CONFIRMATION_MANAGER', 'ROLE_HANDLER_MANAGER', 'ROLE_DELIVER_MANAGER'])"><a href="#userCreate">Создание пользователя</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li ng-show="hasAuthority(['ROLE_USER'])"><a href="#myOrderList">Мои заказы</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-show="isAuth()"><a href="j_spring_security_logout">Выход</a></li>
+                </ul>
+
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-show="hasAuthority(['ROLE_CEO'])"><img class="img-navbar" id="photoEmployeeNavbar"></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-show="isAuth()"><a href="#userCorrect/{{userId}}">{{name}}</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-show="isAuth()"><a href="">{{rusRole}}</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-show="!isAuth()">
+                        <a href="#userCreate">Зарегистрироваться</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-show="!isAuth()"><a href="#login">Войти</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+<div ng-show="showLabelPaySystem">
+    <h3><span class="label label-danger">Произведите оплату за пользование системой</span></h3>
+</div>
+
+<div id="errorOverlay" class="overlay">
+    <div class="errorPopup" id="errorPopup">
+        <p id="errorMessage">ErrorMessage</p>
+    </div>
+</div>
+<div class="content" id="content" ng-view>
+
+</div>
+</body>
+</html>

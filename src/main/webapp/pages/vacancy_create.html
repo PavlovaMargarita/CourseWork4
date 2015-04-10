@@ -1,0 +1,38 @@
+<div class="container">
+
+    <form class="form-horizontal" role="form" id="createVacancyForm" ng-submit="save()">
+
+        <div class="form-group"  ng-show="showStatus">
+            <label class="control-label col-sm-4 label-font-size" for="status">Статус</label>
+
+            <div class="col-sm-8">
+                <select class="form-control input-size" name="status" id="status" data-ng-model="vacancy.status"
+                        ng-options="s.statusEnum as s.statusEnumRussian for s in statusList">
+                </select>
+            </div>
+        </div>
+
+        <div class="div-error error-font" id="vacancyDescriptionError" align="right"></div>
+        <div class="form-group">
+            <label class="control-label col-sm-4 label-font-size" for="description">Описание вакансии</label>
+
+            <div class="col-sm-8">
+                <textarea rows="6" class="form-control input-size" name="description" id="description"
+                          ng-model="vacancy.description"  placeholder="Введите описание вакансии" validate="validateVacancyDescription" errorLabel="#vacancyDescriptionError" > </textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4 label-font-size"></label>
+
+            <div class="col-sm-8">
+                <button type="submit" class="btn btn-primary col-sm-3 button-style">
+                    Сохранить
+                </button>
+                <button type="button" class="btn btn-danger col-sm-offset-1 col-sm-3 button-style"
+                        ng-click="cancel.doClick()"> Отмена
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

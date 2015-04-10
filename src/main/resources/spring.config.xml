@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/data/jpa
+    http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task-3.0.xsd http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+
+    <context:component-scan base-package="bsu.service.impl"/>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/flowers"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+    </bean>
+
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="persistenceUnitName" value="myPersistenceUnit"/>
+        <property name="packagesToScan" value="bsu.model.hibernate"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="databasePlatform" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
+                <property name="showSql" value="false"/>
+                <property name="generateDdl" value="true"/>
+            </bean>
+        </property>
+        <property name="persistenceProvider">
+            <bean class="org.hibernate.jpa.HibernatePersistenceProvider"></bean>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <jpa:repositories base-package="bsu.repository"/>
+
+    <bean id="customUserDetailsService"
+          class="bsu.service.impl.CustomUserDetailService">
+    </bean>
+
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize">
+            <value>104857600</value>
+        </property>
+        <property name="maxInMemorySize">
+            <value>4096</value>
+        </property>
+    </bean>
+
+    <task:annotation-driven />
+
+    <!--<mongo:mongo host="localhost" port="27017"/>-->
+    <!--<mongo:db-factory dbname="${mongo.employee_service}" mongo-ref="mongo"/>-->
+
+    <!--<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">-->
+        <!--<constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>-->
+    <!--</bean>-->
+</beans>

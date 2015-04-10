@@ -1,0 +1,132 @@
+<div class="container">
+
+    <form class="form-horizontal" role="form">
+
+        <h3 align="center">Сведения пользователя</h3>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="last_name">Фамилия</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control " name="last_name" id="last_name"
+                       ng-model="user.lastName"
+                       placeholder="Введите фамилию" ng-readonly="readonly"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="last_name">Имя</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control " name="first_name" id="fist_name"
+                       ng-model="user.firstName"
+                       placeholder="Введите имя" ng-readonly="readonly"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="last_name">Город</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control " name="city" id="city"
+                       ng-model="user.city"
+                       placeholder="Введите город" ng-readonly="readonly"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="last_name">Улица</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control " name="street" id="street"
+                       ng-model="user.street"
+                       placeholder="Введите улицу" ng-readonly="readonly"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="last_name">Дом</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control " name="house" id="house"
+                       ng-model="user.house"
+                       placeholder="Введите дом" ng-readonly="readonly"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="last_name">Квартира</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control " name="flat" id="flat"
+                       ng-model="user.flat"
+                       placeholder="Введите квартиру" ng-readonly="readonly"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="last_name">Номер телефона</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control " name="phone" id="phone"
+                       ng-model="user.phone"
+                       placeholder="Введите номер телефона" ng-readonly="readonly"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="last_name">Логин</label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control " name="username" id="username"
+                       ng-model="user.username"
+                       placeholder="Введите логин" ng-readonly="readonly"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="last_name">Пароль</label>
+
+            <div class="col-sm-4">
+                <input type="password" class="form-control " name="password" id="password"
+                       ng-model="user.password"
+                       placeholder="Введите пароль" ng-readonly="readonly"/>
+            </div>
+        </div>
+
+        <div class="form-group" ng-show="function=='create'">
+            <label class="control-label col-sm-4" for="last_name">Повторите пароль</label>
+
+            <div class="col-sm-4">
+                <input type="password" class="form-control "
+                       ng-model="repeatePassword"
+                       placeholder="Введите пароль" ng-readonly="readonly"/>
+            </div>
+        </div>
+
+
+        <div class="form-group" ng-show="hasAuthority(['ROLE_CONFIRMATION_MANAGER', 'ROLE_HANDLER_MANAGER', 'ROLE_DELIVER_MANAGER'])">
+            <label class="control-label col-sm-4" for="role">Роль</label>
+
+            <div class="col-sm-4">
+                <select class="form-control " name="role" id="role" data-ng-model="user.role"
+                        ng-options="r.roleEnum as r.roleRussian for r in roleList">
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4 label-font-size"></label>
+
+            <div class="col-sm-8">
+                <button type="button" class="btn btn-primary col-sm-3" ng-click="save.doClick()">
+                    Сохранить
+                </button>
+                <button type="button" class="btn btn-danger col-sm-offset-1 col-sm-3"
+                        ng-click="cancel.doClick()"> Отмена
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <form action="j_spring_security_check" method="POST" id="formID" ng-submit="authorization()" ng-show="false">
+        <div class="div-error" id="loginError"></div>
+        <input type="text" class="form-control" placeholder="Ваш логин" id="j_username" name="j_username" validate="validateUsername" errorLabel="#loginError" data-ng-model="username"/>
+        <div class="div-error" id="passwordError"></div>
+        <input type="password" class="form-control" placeholder="Ваш пароль" id="j_password" name="j_password" validate="validatePassword" errorLabel="#passwordError" data-ng-model="password"/>
+        <button type="button" class="btn btn-primary" ng-click="authorization.doClick()"> Войти</button>
+        <!--<button type="submit" class="btn btn-primary"> Войти</button>-->
+    </form>
+</div>

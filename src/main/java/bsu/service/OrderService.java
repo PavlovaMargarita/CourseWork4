@@ -13,4 +13,5 @@ public interface OrderService {
     public void managerOrderUpdate(Long orderId, OrderStatusEnum status);
     public List getOrderByUserId(Long userId, Integer page, Integer size);
     public Long getOrderCountByUserId(Long userId);
+    public void createOrder(OrderDto orderDto);
 }

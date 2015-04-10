@@ -6,9 +6,6 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
 
-/**
- * Created by Margarita on 23.11.2014.
- */
 @Entity
 @Table(name = "order_description")
 public class Order {

@@ -1,8 +1,9 @@
-app.controller("flowerListController", function ($scope, $rootScope, $http, PagerService) {
+app.controller("flowerListController", function ($scope, $rootScope, $http, PagerService, $location) {
     $scope.range = [];
     $scope.currentPage = 1;
     $scope.totalPages = 1;
     $scope.totalRecords = 0;
+    $scope.recordsOnPage = $rootScope.recordsOnPage;
 
     var response = $http({
         method: "get",
@@ -15,17 +16,21 @@ app.controller("flowerListController", function ($scope, $rootScope, $http, Page
     response.success(function (data) {
         $scope.flowers = data;
 
-        var vacancyCount = $http({
+        var flowerCount = $http({
             method: "get",
             url: host + "/flower/flowerCountList",
             dataType: 'json',
             contentType: 'application/json',
             mimeType: 'application/json'
         });
-        vacancyCount.success(function (data) {
-            $scope.checkInfo = {};
+        flowerCount.success(function (data) {
+            $scope.checkInfo = [];
+            $scope.costByFlowerCount = [];
             for(var i = 0; i < data; i++){
-                $scope.checkInfo[i] = {flowerId:0,isChecked: false, count: 0};
+                $scope.checkInfo[i] = {flowerId:0, isChecked: false, count: 0, cost:0};
+            }
+            for(var i = 0; i < $scope.flowers.length; i++){
+                $scope.checkInfo[i] = {flowerId: $scope.flowers[i].id, isChecked: false, count: 0, cost: $scope.flowers[i].cost};
             }
 
             $scope.totalRecords = Number(data);
@@ -58,10 +63,29 @@ app.controller("flowerListController", function ($scope, $rootScope, $http, Page
                 $scope.range = PagerService.buildRange($scope.totalPages);
             });
         });
-    }
+    };
+
+    $scope.status = false;
 
     $scope.check = function(value){
-        console.log("value");
+        $scope.checkInfo[value].isChecked = !$scope.checkInfo[value].isChecked;
+        //$("#"+value).s
+        $scope.status = !$scope.status;
+    };
+
+    $scope.totalCost = 0;
+    $scope.getTotalCost = function(){
+        var sum = 0;
+        for(var i=0;i <  $scope.checkInfo.length; i++){
+            sum += ($scope.checkInfo[i].cost * $scope.checkInfo[i].count);
+        }
+        $scope.totalCost = sum;
+    };
+
+    $scope.createOrder = function(){
+        $rootScope.orderInfo = $scope.checkInfo;
+        $location.path('/createOrder');
+        $location.replace();
     }
 
 });

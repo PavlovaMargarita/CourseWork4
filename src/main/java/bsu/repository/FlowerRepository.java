@@ -4,6 +4,7 @@ import bsu.model.hibernate.Flower;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -14,4 +15,7 @@ public interface FlowerRepository extends JpaRepository<Flower, Long> {
 
     @Query("select count(f) from Flower f")
     public Long getFlowerCountList();
+
+    @Query("select f from Flower f where f.id in (:flowerIdList)")
+    public List<Flower> getFlowerListById(@Param("flowerIdList")List<Long> flowerIdList);
 }

@@ -7,4 +7,5 @@ import java.util.List;
 public interface FlowerService {
     public List<FlowerDto> getFlowerList(Integer page, Integer size);
     public Long getFlowerCountList();
+    public List<FlowerDto> getFlowerListById(List<Long> flowerIdList);
 }

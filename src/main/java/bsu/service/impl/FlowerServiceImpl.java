@@ -35,6 +35,16 @@ public class FlowerServiceImpl implements FlowerService {
         return count;
     }
 
+    @Override
+    public List<FlowerDto> getFlowerListById(List<Long> flowerIdList) {
+        List<Flower> flowerList = flowerRepository.getFlowerListById(flowerIdList);
+        List<FlowerDto> flowerDtoList = new ArrayList<>();
+        for(Flower flower : flowerList){
+            flowerDtoList.add(convertToFlowerDto(flower));
+        }
+        return flowerDtoList;
+    }
+
     private FlowerDto convertToFlowerDto(Flower flower){
         FlowerDto flowerDto = new FlowerDto();
         flowerDto.setId(flower.getId());

@@ -45,6 +45,9 @@
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
                 <ul class="nav navbar-nav">
+                    <li ng-show="hasAuthority(['ROLE_USER'])"><a href="#">Галерея цветов - Главная</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
                     <li ng-show="hasAuthority(['ROLE_CONFIRMATION_MANAGER', 'ROLE_HANDLER_MANAGER', 'ROLE_DELIVER_MANAGER'])"><a href="#orderList">Список заказов</a></li>
                 </ul>
 
@@ -83,11 +86,6 @@
         </div>
     </nav>
 </header>
-
-
-<div ng-show="showLabelPaySystem">
-    <h3><span class="label label-danger">Произведите оплату за пользование системой</span></h3>
-</div>
 
 <div id="errorOverlay" class="overlay">
     <div class="errorPopup" id="errorPopup">

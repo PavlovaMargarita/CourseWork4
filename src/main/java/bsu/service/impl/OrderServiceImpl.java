@@ -6,10 +6,13 @@ import bsu.model.dto.CustomerInformation;
 import bsu.model.dto.LoginDto;
 import bsu.model.dto.OrderDto;
 import bsu.model.dto.OrderElementDto;
+import bsu.model.hibernate.Flower;
 import bsu.model.hibernate.Order;
 import bsu.model.hibernate.OrderElement;
 import bsu.model.hibernate.User;
 import bsu.param.SecurityWrapper;
+import bsu.repository.FlowerRepository;
+import bsu.repository.OrderElementRepository;
 import bsu.repository.OrderRepository;
 import bsu.repository.UserRepository;
 import bsu.service.OrderService;
@@ -22,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -32,6 +36,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private FlowerRepository flowerRepository;
+
+    @Autowired
+    private OrderElementRepository orderElementRepository;
 
 
     @Override
@@ -121,20 +131,39 @@ public class OrderServiceImpl implements OrderService {
         return count;
     }
 
+    @Override
+    public void createOrder(OrderDto orderDto) {
+        Order order = new Order();
+        User currentUser = userRepository.findOne(SecurityWrapper.getCurrentUserId());
+        order.setCustomer(currentUser);
+        order.setStatus(OrderStatusEnum.NEW);
+        order.setDate(new java.sql.Date((new Date()).getTime()));
+        order = orderRepository.save(order);
+        for(OrderElementDto orderElementDto : orderDto.getFlowerList()){
+            OrderElement orderElement = new OrderElement();
+            orderElement.setCount(orderElementDto.getCount());
+            Flower flower = flowerRepository.findOne(orderElementDto.getFlowerId());
+            orderElement.setFlower(flower);
+            orderElement.setOrder(order);
+            orderElementRepository.save(orderElement);
+        }
+
+    }
+
     private OrderDto convertToOrderDto(Order order){
         OrderDto orderDto = new OrderDto();
         orderDto.setId(order.getId());
-        orderDto.setConfirmationManager(order.getConfirmationManager().getFirstName() + " " + order.getConfirmationManager().getLastName());
+//        orderDto.setConfirmationManager(order.getConfirmationManager().getFirstName() + " " + order.getConfirmationManager().getLastName());
         orderDto.setCustomer(order.getCustomer().getFirstName() + " " + order.getCustomer().getLastName());
         orderDto.setDate(order.getDate());
-        orderDto.setDeliveryManager(order.getDeliveryManager().getFirstName() + " " + order.getDeliveryManager().getLastName());
+//        orderDto.setDeliveryManager(order.getDeliveryManager().getFirstName() + " " + order.getDeliveryManager().getLastName());
         List<OrderElement> orderElements = order.getFlowerList();
         List<OrderElementDto> orderElementDtoList = new ArrayList<>();
         for(OrderElement orderElement : orderElements){
             orderElementDtoList.add(convertToOrderElementDto(orderElement));
         }
         orderDto.setFlowerList(orderElementDtoList);
-        orderDto.setHandlerManager(order.getHandlerManager().getFirstName() + " " + order.getHandlerManager().getLastName());
+//        orderDto.setHandlerManager(order.getHandlerManager().getFirstName() + " " + order.getHandlerManager().getLastName());
         orderDto.setStatus(order.getStatus());
 
         CustomerInformation customerInformation = new CustomerInformation();
@@ -154,4 +183,6 @@ public class OrderServiceImpl implements OrderService {
         orderElementDto.setCount(orderElement.getCount());
         return orderElementDto;
     }
+
+
 }

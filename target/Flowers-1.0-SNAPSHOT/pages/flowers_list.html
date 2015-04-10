@@ -8,6 +8,8 @@
     <br/>
     <br/>
     <br/>
+    <h1> Total {{totalCost}}</h1>
+    <button typw="button" class="btn btn-default" ng-disabled="totalCost == 0" ng-click="createOrder()"> Заказать</button>
     <table class="table" id="table">
         <thead>
         <tr class="warning">
@@ -24,8 +26,10 @@
             <td>здесь будет картинка</td>
             <td> {{flower.description}}</td>
             <td> {{flower.cost}} </td>
-            <td> <input type="text" ng-readonly="checkInfo[(currentPage-1)*recordsOnPage + $index].isChecked"></td>
-            <td></td>
+            <td> <input type="number" ng-model="checkInfo[(currentPage-1)*recordsOnPage + $index].count" ng-disabled="!checkInfo[(currentPage-1)*recordsOnPage + $index].isChecked" ng-change="getTotalCost()" min="0"></td>
+            <!--ng-change="setCount((currentPage-1)*recordsOnPage + $index)"-->
+            <!--<td>{{checkInfo[(currentPage-1)*recordsOnPage + $index].cost}}</td>-->
+            <td >{{checkInfo[(currentPage-1)*recordsOnPage + $index].count * flower.cost}}</td>
         </tr>
     </table>
 

@@ -71,181 +71,65 @@ app.controller("orderListController", function ($scope, $rootScope, $http, Pager
     };
 });
 
-app.controller("employeeCreateController", function ($scope, $rootScope, $http, $location) {
-    $scope.employee = {};
-    $scope.create = true;
-    $scope.showStandardPhotoAndFiredButton = false;
-    $scope.editEmployeeInput = true;
-    $scope.onFileSelect = function ($files) {
-        $scope.photo = $files[0];
-        var reader = new FileReader();
-        var imgtag = document.getElementById("employeePhotoCreate");
-        var photo;
-        reader.onload = function (e) {
-            photo = e.target.result;
-            imgtag.src = photo;
-        };
-        reader.readAsDataURL($scope.photo);
-    };
+app.controller("orderCreateController", function ($scope, $rootScope, $http, $location,$routeParams) {
 
-    $scope.openDateOfBirth = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.openedDateOfBirth = true;
-    };
-    $scope.openDateContractEnd = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.openedContractEnd = true;
-    };
-
-
-    var departments = $http({
+    $scope.orderInfo = $rootScope.orderInfo;
+    var flowerIdArray = [];
+    $scope.indexArray = [];
+    for(var i = 0; i < $scope.orderInfo.length; i++){
+        if($scope.orderInfo[i].isChecked){
+            flowerIdArray.push(Number($scope.orderInfo[i].flowerId));
+            $scope.indexArray.push(i);
+        }
+    }
+    var getFlowerById = $http({
         method: "get",
-        url: "/EmployeeService/company/departmentList",
+        url: host + "/flower/flowerListById",
         dataType: 'json',
         contentType: 'application/json',
-        mimeType: 'application/json'
+        mimeType: 'application/json',
+        params: {flowerIdList: flowerIdArray}
     });
-    departments.success(function (data) {
-        $scope.departments = data;
-    });
-
-    var countries = $http({
-        method: "get",
-        url: "/EmployeeService/country/countryList",
-        dataType: 'json',
-        contentType: 'application/json',
-        mimeType: 'application/json'
-    });
-    countries.success(function (data) {
-        $scope.countries = data;
-        $scope.country = {};
-        $scope.country.id = $scope.countries[0].id;
-    });
-
-    var position = $http({
-        method: "get",
-        url: "/EmployeeService/company/positionInCompanyList",
-        dataType: 'json',
-        contentType: 'application/json',
-        mimeType: 'application/json'
-    });
-    position.success(function (data) {
-        $scope.positions = data;
-        $scope.position = {};
-        $scope.position.id = $scope.positions[0].id;
-    });
-
-    $scope.sexList = [];
-    $scope.sexList[0] = {'sexEnum': 'MALE', sexRussian: 'Мужской'};
-    $scope.sexList[1] = {'sexEnum': 'FEMALE', sexRussian: 'Женский'};
-    $scope.employee.sex = $scope.sexList[0].sexEnum;
-
-    var role = $http({
-        method: "get",
-        url: "/EmployeeService/employee/roleList",
-        dataType: 'json',
-        contentType: 'application/json',
-        mimeType: 'application/json'
-    });
-    role.success(function (data) {
-        $scope.roleList = [];
-        data.forEach(addRoleName);
-        function addRoleName(element) {
-            var value;
-            switch (element) {
-                case 'ROLE_HRM':
-                    value = {roleEnum: element, roleTranslate: 'HRM'};
-                    $scope.roleList.push(value);
+    getFlowerById.success(function (data) {
+        $scope.flowers = data;
+        $scope.order = [];
+        for(var i = 0; i < $scope.flowers.length; i++){
+            for(var j = 0; j < $scope.indexArray.length; j++){
+                if($scope.flowers[i].id == $scope.orderInfo[j].flowerId){
+                    $scope.order.push({flower:$scope.flowers[i], count: $scope.orderInfo[j].count});
                     break;
-                case 'ROLE_ADMIN':
-                    value = {roleEnum: element, roleTranslate: 'Администратор'};
-                    $scope.roleList.push(value);
-                    break;
-                case 'ROLE_EMPLOYEE':
-                    value = {roleEnum: element, roleTranslate: 'Сотрудник'};
-                    $scope.roleList.push(value);
-                    break;
+                }
             }
         }
 
-        $scope.employee.role = $scope.roleList[0].roleEnum;
     });
 
-    $scope.save = {};
-    $scope.save.doClick = function () {
-        var ok = validateObject.validate("#createEmployeeForm");
-        if (ok) {
-            $scope.address = {};
-            $scope.department = {};
-            var response = $http({
-                method: "post",
-                url: "/EmployeeService/employee/saveEmployeeCreate",
-                data: {
-                    first_name: $scope.employee.first_name,
-                    last_name: $scope.employee.last_name,
-                    sex: $scope.employee.sex,
-                    dateOfBirth: $scope.employee.dateOfBirth,
-                    countryId: $scope.country.id,
-                    city: $scope.employee.city,
-                    street: $scope.employee.street,
-                    house: $scope.employee.house,
-                    flat: $scope.employee.flat,
-                    addressId: $scope.address.id,
-                    departmentId: $scope.department.id,
-                    positionInCompanyId: $scope.position.id,
-                    dateContractEnd: $scope.employee.dateContractEnd,
-                    fired: false,
-                    firedComment: '',
-                    photoURL: 't',
-                    login: $scope.employee.login,
-                    password: $scope.employee.password,
-                    role: $scope.employee.role,
-                    companyId: $scope.employee.companyId,
-                    email: $scope.employee.email
-                },
-                dataType: 'json',
-                contentType: 'application/json',
-                mimeType: 'application/json'
-            });
-            response.success(function (data) {
-                if ($scope.photo) {
-                    var fd = new FormData();
-                    fd.append('idEmployee', data);
-                    fd.append("photo", $scope.photo);
-                    $http({
-                        method: 'POST',
-                        url: '/EmployeeService/employee/uploadPhoto',
-                        headers: {'Content-Type': undefined},
-                        data: fd,
-                        transformRequest: angular.identity
-                    });
-                    //.success(function () {
-                    //    $location.path('/employeeList');
-                    //    $location.replace();
-                    //});
-                } else {
-                    $location.path('/employeeList');
-                    $location.replace();
-                }
-            });
+    $scope.save = function(){
+        var flowerList = [];
+        for(var i = 0; i < $scope.order.length; i++){
+            flowerList.push({flowerId : $scope.order[i].flower.id, count : $scope.order[i].count});
         }
+        var response = $http({
+            method: "post",
+            url: host + "/order/orderCreate",
+            data: {
+                flowerList : flowerList
+            },
+            dataType: 'json',
+            contentType: 'application/json',
+            mimeType: 'application/json'
+        });
+        response.success(function () {
+            $location.path('/myOrderList');
+            $location.replace();
+        });
+
     };
 
-    $scope.changeDepartment = {};
-    $scope.changeDepartment.change = function () {
-        loadAddress($scope.department.id, $http, $scope);
-    };
-
-    $scope.loadPhotoButton = {};
-    $scope.loadPhotoButton.doClick = function () {
-        document.getElementById('photoFileID').click();
-    };
 
     $scope.cancel = {};
     $scope.cancel.doClick = function () {
-        $location.path('/employeeList');
+        $location.path('/orderList');
         $location.replace();
     }
 });

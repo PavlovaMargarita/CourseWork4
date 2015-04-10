@@ -60,4 +60,11 @@ public class OrderController {
         Long count = orderService.getOrderCountByUserId(userId);
         return count;
     }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/orderCreate")
+    @ResponseBody
+    public void createOrder(@RequestBody OrderDto orderDto){
+        orderService.createOrder(orderDto);
+
+    }
 }

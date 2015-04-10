@@ -111,8 +111,8 @@ app.config(function ($routeProvider, $httpProvider) {
             templateUrl: 'pages/order_list.html',
             controller: 'orderListController'
         })
-        .when('/orderCreate', {
-            templateUrl: 'pages/order_show.html',
+        .when('/createOrder', {
+            templateUrl: 'pages/order_create.html',
             controller: 'orderCreateController'
         })
         .when('/orderCorrect/:id', {

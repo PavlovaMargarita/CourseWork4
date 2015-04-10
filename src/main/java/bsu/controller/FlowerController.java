@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -32,6 +35,17 @@ public class FlowerController {
     public Long getFlowerCountList(){
         Long count = flowerService.getFlowerCountList();
         return count;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/flowerListById")
+    @ResponseBody
+    public List<FlowerDto> getFlowerListById(@RequestParam("flowerIdList") List<String> flowerIdList){
+        List<Long> list = new ArrayList<>(flowerIdList.size());
+        for(String str : flowerIdList){
+            list.add(Long.valueOf(str));
+        }
+        List<FlowerDto> result = flowerService.getFlowerListById(list);
+        return result;
     }
 
 }

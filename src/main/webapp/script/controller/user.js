@@ -57,7 +57,7 @@ app.controller("userListController", function ($scope, $rootScope, $http, PagerS
 
 });
 
-app.controller("userCreateController", function ($scope, $rootScope, $http, $location, $cookieStore) {
+app.controller("userCreateController", function ($scope, $rootScope, $http, $location, $cookieStore, $modal) {
 
     $scope.readonly = false;
     $scope.user = {};
@@ -68,55 +68,138 @@ app.controller("userCreateController", function ($scope, $rootScope, $http, $loc
     $scope.roleList[2] = {'roleEnum': 'ROLE_DELIVER_MANAGER', roleRussian: 'Менеджер доставки'};
     $scope.roleList[3] = {'roleEnum': 'ROLE_USER', roleRussian: 'Пользователь'};
     $scope.user.role = 'ROLE_USER';
+    $scope.location = "53, 27";
 
     $scope.save = {};
-    $scope.save.doClick = function () {
-        var ok = true;
-        if(ok) {
-            var response = $http({
-                method: "post",
-                url: host + "/user/userCreateOrUpdate",
-                data: {
-                    id : $scope.user.id,
-                    firstName: $scope.user.firstName,
-                    lastName : $scope.user.lastName,
-                    city : $scope.user.city,
-                    street : $scope.user.street,
-                    house : $scope.user.house,
-                    flat : $scope.user.flat,
-                    phone : $scope.user.phone,
-                    username : $scope.user.username,
-                    password : $scope.user.password,
-                    role : $scope.user.role
 
-                },
-                dataType: 'json',
-                contentType: 'application/json',
-                mimeType: 'application/json'
-            });
-            response.success(function () {
-                if($rootScope.role) {
-                    $location.path('/userList');
-                    $location.replace();
-                } else {
-                    $scope.username =  $scope.user.username;
-                    $scope.password =  $scope.user.password;
-                    singIn($scope, $location, $http, $cookieStore);
+    $scope.save.createVerifyNumber = function(){
+        var request = $http({
+            method: "get",
+            url: host + "/user/verifyUser",
+            dataType: 'json',
+            contentType: 'application/json',
+            mimeType: 'application/json',
+            params: {phone : $scope.user.phone}
+        });
+        request.success(function (data) {
+            //
+            $scope.verifyNumber = data;
+            var modalInstance = $modal.open({
+                templateUrl: 'pages/verify_user.html',
+                controller: app.verifyUserCtrl,
+                resolve: {
+                    verifyNumber: function(){
+                        return $scope.verifyNumber;
+                    }
                 }
             });
-        }
+        });
     };
+
 
     $scope.cancel = {};
     $scope.cancel.doClick = function () {
         $location.path('/companyList');
         $location.replace();
+    };
+
+
+    var mapOptions = {
+        zoom: 10,
+        center: new google.maps.LatLng(53.55, 27.33),
+        mapTypeId: google.maps.MapTypeId.TERRAIN
+    };
+
+    $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    $scope.markers = [];
+    var createMarker = function (){
+        var marker = new google.maps.Marker({
+            map: $scope.map,
+            position: new google.maps.LatLng(53, 27)
+        });
+        $scope.markers.push(marker);
+    };
+
+    createMarker();
+
+    $scope.changeAddress = function(){
+        setTimeout(function(){
+            if($scope.user.city) {
+                var locationStr = "";
+                locationStr += $scope.user.city;
+                if($scope.user.street) {
+                    locationStr += "," + $scope.user.street;
+                    if($scope.user.house) {
+                        locationStr += " "+$scope.user.house;
+                    }
+                }
+                locationStr += ", Беларусь";
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({'address': locationStr}, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        var marker = new google.maps.Marker({
+                            map: $scope.map,
+                            position: new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng())
+                        });
+                        $scope.markers[0].setMap(null);
+                        $scope.markers[0] = marker;
+                        $scope.map.setCenter(new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng()));
+                    }
+                });
+            }
+        }, 3000);
+
     }
 });
 
 app.controller("userCorrectController", function ($scope, $http, $routeParams, $location, $rootScope) {
-    $scope.function = "edit";
+    var mapOptions = {
+        zoom: 10,
+        center: new google.maps.LatLng(53.55, 27.33),
+        mapTypeId: google.maps.MapTypeId.TERRAIN
+    };
+    $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    $scope.markers = [];
+    var createMarker = function (){
+        var marker = new google.maps.Marker({
+            map: $scope.map,
+            position: new google.maps.LatLng(53, 27)
+        });
+        $scope.markers.push(marker);
+    };
 
+    createMarker();
+
+    $scope.changeAddress = function(){
+        setTimeout(function(){
+            if($scope.user.city) {
+                var locationStr = "";
+                locationStr += $scope.user.city;
+                if($scope.user.street) {
+                    locationStr += "," + $scope.user.street;
+                    if($scope.user.house) {
+                        locationStr += " "+$scope.user.house;
+                    }
+                }
+                locationStr += ", Беларусь";
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({'address': locationStr}, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        var marker = new google.maps.Marker({
+                            map: $scope.map,
+                            position: new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng())
+                        });
+                        $scope.markers[0].setMap(null);
+                        $scope.markers[0] = marker;
+                        $scope.map.setCenter(new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng()));
+                    }
+                });
+            }
+        }, 3000);
+
+    }
+
+    $scope.function = "edit";
 
     $scope.roleList =[];
     $scope.roleList[0] = {'roleEnum': 'ROLE_CONFIRMATION_MANAGER', roleRussian: 'Менеджер подтверждения заказов'};
@@ -140,6 +223,7 @@ app.controller("userCorrectController", function ($scope, $http, $routeParams, $
     });
     response.success(function (data) {
         $scope.user = data;
+        $scope.changeAddress();
     });
 
     $scope.save = {};
@@ -234,11 +318,10 @@ singIn = function($scope, $location, $http, $cookieStore ){
     $scope.successRedirect = function (data) {
         if(data.role != 'ROLE_USER'){
             $location.path('/orderList');
+        } else{
+            $location.path('/myOrderList');
         }
-        //$location.replace();
-        else{
-            alert("it was user");
-        }
+        $location.replace();
 
     };
 

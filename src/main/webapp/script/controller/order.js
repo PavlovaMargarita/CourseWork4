@@ -95,8 +95,8 @@ app.controller("orderCreateController", function ($scope, $rootScope, $http, $lo
         $scope.order = [];
         for(var i = 0; i < $scope.flowers.length; i++){
             for(var j = 0; j < $scope.indexArray.length; j++){
-                if($scope.flowers[i].id == $scope.orderInfo[j].flowerId){
-                    $scope.order.push({flower:$scope.flowers[i], count: $scope.orderInfo[j].count});
+                if($scope.flowers[i].id == $scope.orderInfo[$scope.indexArray[j]].flowerId){
+                    $scope.order.push({flower:$scope.flowers[i], count: $scope.orderInfo[$scope.indexArray[j]].count});
                     break;
                 }
             }

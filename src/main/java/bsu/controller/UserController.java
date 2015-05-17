@@ -62,6 +62,10 @@ public class UserController {
         return result;
     }
 
-
+    @RequestMapping(method = RequestMethod.GET, value = "/verifyUser")
+    @ResponseBody
+    public Integer verifyUser(@RequestParam("phone") String phone){
+        return userService.verifyUser(phone);
+    }
 
 }

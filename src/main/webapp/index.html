@@ -16,10 +16,12 @@
     <script type="text/javascript" src="script/app.js"></script>
     <script type="text/javascript" src="script/controller/authorization.js"></script>
     <script type="text/javascript" src="script/controller/order.js"></script>
+    <!--<script type="text/javascript" src="script/vacancyValidator.js"></script>-->
     <script type="text/javascript" src="script/validator.js"></script>
     <script type="text/javascript" src="script/controller/user.js"></script>
     <script type="text/javascript" src="script/directive/checklist-model.js"></script>
     <script type="text/javascript" src="script/controller/flower.js"></script>
+    <script type="text/javascript" src="script/controller/verifyUserCtrl.js"></script>
     <!--<script type="text/javascript" src="script-lib/jQuery.js"></script>-->
 
     <script type="text/javascript" src="script-lib/jquery-ui.js"></script>
@@ -37,6 +39,9 @@
     <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.0.js"></script>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 
+    <script src="http://maps.googleapis.com/maps/api/js?key=&sensor=false&extension=.js"></script>
+
+
 </head>
 
 <body ng-app="EmployeeService">
@@ -45,7 +50,7 @@
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
                 <ul class="nav navbar-nav">
-                    <li ng-show="hasAuthority(['ROLE_USER'])"><a href="#">Галерея цветов - Главная</a></li>
+                    <li><a href="#">Галерея цветов - Главная</a></li>
                 </ul>
                 <ul class="nav navbar-nav">
                     <li ng-show="hasAuthority(['ROLE_CONFIRMATION_MANAGER', 'ROLE_HANDLER_MANAGER', 'ROLE_DELIVER_MANAGER'])"><a href="#orderList">Список заказов</a></li>
@@ -58,11 +63,11 @@
                     <li ng-show="hasAuthority(['ROLE_CONFIRMATION_MANAGER', 'ROLE_HANDLER_MANAGER', 'ROLE_DELIVER_MANAGER'])"><a href="#userCreate">Создание пользователя</a></li>
                 </ul>
                 <ul class="nav navbar-nav">
-                    <li ng-show="hasAuthority(['ROLE_USER'])"><a href="#myOrderList">Мои заказы</a></li>
+                    <li ng-show="isAuth()"><a href="#myOrderList">Мои заказы</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li ng-show="isAuth()"><a href="j_spring_security_logout">Выход</a></li>
+                    <li ng-show="isAuth()"><a href="j_spring_security_logout" ng-click="checkout()">Выход</a></li>
                 </ul>
 
 

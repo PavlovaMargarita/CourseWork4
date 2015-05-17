@@ -28,7 +28,7 @@
             <div class="col-sm-4">
                 <input type="text" class="form-control " name="city" id="city"
                        ng-model="user.city"
-                       placeholder="Введите город" ng-readonly="readonly"/>
+                       placeholder="Введите город" ng-readonly="readonly" ng-change="changeAddress()"/>
             </div>
         </div>
         <div class="form-group">
@@ -37,7 +37,7 @@
             <div class="col-sm-4">
                 <input type="text" class="form-control " name="street" id="street"
                        ng-model="user.street"
-                       placeholder="Введите улицу" ng-readonly="readonly"/>
+                       placeholder="Введите улицу" ng-readonly="readonly" ng-change="changeAddress()"/>
             </div>
         </div>
         <div class="form-group">
@@ -46,7 +46,7 @@
             <div class="col-sm-4">
                 <input type="text" class="form-control " name="house" id="house"
                        ng-model="user.house"
-                       placeholder="Введите дом" ng-readonly="readonly"/>
+                       placeholder="Введите дом" ng-readonly="readonly" ng-change="changeAddress()"/>
             </div>
         </div>
         <div class="form-group">
@@ -58,7 +58,14 @@
                        placeholder="Введите квартиру" ng-readonly="readonly"/>
             </div>
         </div>
-        <div class="form-group">
+
+        <div id="map" style="height: 350px;"></div>
+        <div id="class" ng-repeat="marker in markers | orderBy : 'title'">
+            <a href="#" ng-click="openInfoWindow($event, marker)">{{marker.title}}</a>
+        </div>
+
+
+        <div class="form-group" style="margin-top: 20px;">
             <label class="control-label col-sm-4" for="last_name">Номер телефона</label>
 
             <div class="col-sm-4">
@@ -111,7 +118,7 @@
             <label class="control-label col-sm-4 label-font-size"></label>
 
             <div class="col-sm-8">
-                <button type="button" class="btn btn-primary col-sm-3" ng-click="save.doClick()">
+                <button type="button" class="btn btn-primary col-sm-3" ng-click="save.createVerifyNumber()">
                     Сохранить
                 </button>
                 <button type="button" class="btn btn-danger col-sm-offset-1 col-sm-3"

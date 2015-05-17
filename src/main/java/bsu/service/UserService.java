@@ -12,4 +12,5 @@ public interface UserService {
     public Integer getUserCount();
     public void createOrUpdateUser(UserDto userDto);
     public UserDto getUserById(Long userId);
+    public Integer verifyUser(String phone);
 }

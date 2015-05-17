@@ -52,8 +52,10 @@ app.controller("authorizationController", function ($scope, $http, $location, $r
     $scope.successRedirect = function (data) {
         if(data.role != 'ROLE_USER'){
             $location.path('/orderList');
+        } else{
+            $location.path('/myOrderList');
         }
-        //$location.replace();
+        $location.replace();
 
     };
 

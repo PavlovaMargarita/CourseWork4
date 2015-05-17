@@ -46,7 +46,11 @@ app.run(function ($rootScope, $cookieStore) {
         }
         var userRole = user.role;
         return (roles.indexOf(userRole) > -1);
-    }
+    };
+
+    $rootScope.checkout = function(){
+        $cookieStore.remove("userInfo");
+    };
 });
 
 app.service('ErrorPopupService', function($timeout) {

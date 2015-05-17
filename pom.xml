@@ -162,6 +162,12 @@
             <version>2.12.4</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.nexmo</groupId>
+            <artifactId>nexmo-java-sdk</artifactId>
+            <version>1.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -177,6 +183,18 @@
             </plugin>
         </plugins>
     </build>
+    <repositories>
+        <repository>
+            <id>javanto-releases</id>
+            <url>https://raw.github.com/javanto/repository/releases</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
 
 </project>

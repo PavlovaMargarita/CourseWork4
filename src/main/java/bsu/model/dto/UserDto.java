@@ -14,6 +14,7 @@ public class UserDto {
     private Integer house;
     private String flat;
     private String phone;
+    private String verifyNumber;
 
     public Long getId() {
         return id;
@@ -101,5 +102,13 @@ public class UserDto {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getVerifyNumber() {
+        return verifyNumber;
+    }
+
+    public void setVerifyNumber(String verifyNumber) {
+        this.verifyNumber = verifyNumber;
     }
 }

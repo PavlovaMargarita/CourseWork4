@@ -49,6 +49,11 @@ app.controller("flowerListController", function ($scope, $rootScope, $http, Page
         });
         response.success(function (data) {
             $scope.flowers = data;
+
+            for(var i = 0; i < $scope.flowers.length; i++){
+                $scope.checkInfo[(pageNumber - 1)*$rootScope.recordsOnPage + i] = {flowerId: $scope.flowers[i].id, isChecked: false, count: 0, cost: $scope.flowers[i].cost};
+            }
+
             $scope.currentPage = pageNumber;
             var vacancyCount = $http({
                 method: "get",
@@ -84,8 +89,16 @@ app.controller("flowerListController", function ($scope, $rootScope, $http, Page
 
     $scope.createOrder = function(){
         $rootScope.orderInfo = $scope.checkInfo;
-        $location.path('/createOrder');
-        $location.replace();
+        if($rootScope.isAuth() == undefined){
+            $('#shouldAutorize').css("display", "inline");
+            setTimeout(function() {
+            $('#shouldAutorize').fadeOut('fast');
+            }, 3000);
+        } else {
+            //$rootScope.orderInfo = $scope.checkInfo;
+            $location.path('/createOrder');
+            $location.replace();
+        }
     }
 
 });

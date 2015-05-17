@@ -5,11 +5,21 @@
         <hr>
     </div>
 
+    <div id="shouldAutorize" style="display: none; float: right; color:red; font-weight: bold;">
+        Авторизуйтесь для оформления заказа
+    </div>
+
     <br/>
-    <br/>
-    <br/>
-    <h1> Total {{totalCost}}</h1>
-    <button typw="button" class="btn btn-default" ng-disabled="totalCost == 0" ng-click="createOrder()"> Заказать</button>
+
+
+    <div class="col-sm-offset-6 col-sm-4">
+        <h2> Сумма заказа {{totalCost}}</h2>
+    </div>
+    <div class="col-sm-2">
+        <button typw="button" class="btn btn-success" ng-disabled="totalCost == 0" ng-click="createOrder()" style="margin-top: 20px;"> Заказать
+        </button>
+    </div>
+
     <table class="table" id="table">
         <thead>
         <tr class="warning">
@@ -18,7 +28,7 @@
             <th>Название</th>
             <th>Стоимость за 1шт.</th>
             <th>Количество</th>
-            <th>Стоимость ...</th>
+            <th>Суммарная стоимость изделия</th>
         </tr>
         </thead>
         <tr data-ng-repeat="flower in flowers" >

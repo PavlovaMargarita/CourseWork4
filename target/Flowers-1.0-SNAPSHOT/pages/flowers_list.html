@@ -16,57 +16,184 @@
         <h2> Сумма заказа {{totalCost}}</h2>
     </div>
     <div class="col-sm-2">
-        <button typw="button" class="btn btn-success" ng-disabled="totalCost == 0" ng-click="createOrder()" style="margin-top: 20px;"> Заказать
+        <button type="button" id="create_order" class="btn btn-success" ng-disabled="totalCost == 0" ng-click="createOrder()" style="margin-top: 20px;"> Заказать
         </button>
     </div>
 
-    <table class="table" id="table">
-        <thead>
-        <tr class="warning">
-            <th></th>
-            <th>Фото</th>
-            <th>Название</th>
-            <th>Стоимость за 1шт.</th>
-            <th>Количество</th>
-            <th>Суммарная стоимость изделия</th>
-        </tr>
-        </thead>
-        <tr data-ng-repeat="flower in flowers" >
-            <td> <input type="checkbox" ng-click="check((currentPage-1)*recordsOnPage + $index)"> </td>
-            <td>здесь будет картинка</td>
-            <td> {{flower.description}}</td>
-            <td> {{flower.cost}} </td>
-            <td> <input type="number" ng-model="checkInfo[(currentPage-1)*recordsOnPage + $index].count" ng-disabled="!checkInfo[(currentPage-1)*recordsOnPage + $index].isChecked" ng-change="getTotalCost()" min="0"></td>
-            <!--ng-change="setCount((currentPage-1)*recordsOnPage + $index)"-->
-            <!--<td>{{checkInfo[(currentPage-1)*recordsOnPage + $index].cost}}</td>-->
-            <td >{{checkInfo[(currentPage-1)*recordsOnPage + $index].count * flower.cost}}</td>
-        </tr>
-    </table>
+    <ul class="nav nav-tabs" style="float: left; margin-bottom: 15px;">
+        <li id="tab1" name="tab" class="active" style="border-bottom: 1px solid #ccc;"><a href ng-click="selectTab(1)">Цветы</a></li>
+        <li id="tab2" name="tab" style="border-bottom: 1px solid #ccc;"><a href ng-click="selectTab(2)">Букеты</a></li>
+        <li id="tab3" name="tab" style="border-bottom: 1px solid #ccc;"><a href ng-click="selectTab(3)">Собрать букет</a></li>
+    </ul>
 
-    <!--постраничная навигация-->
-    <div class="page-menu" id="pagination">
-        <ul class="pagination">
-            <li ng-show="currentPage == 1" class="disabled"><a href="">Первая</a></li>
-            <li ng-show="currentPage == 1" class="disabled"><a href="">&laquo;</a></li>
-            <li ng-show="currentPage != 1" ng-class="isFirstDisabled()"><a href="javascript:void(0)"
-                                                                           ng-click="getRecords.doClick(1)">Первая</a>
-            </li>
-            <li ng-show="currentPage != 1" ng-class="isPrevDisabled()"><a href="javascript:void(0)"
-                                                                          ng-click="getRecords.doClick(currentPage-1)">&laquo;</a>
-            </li>
+    <div ng-if="selected == 1">
+        <table class="table" id="table">
+            <thead>
+            <tr class="warning">
+                <th></th>
+                <th>Фото</th>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Стоимость за 1шт.</th>
+                <th>Количество</th>
+                <th>Суммарная стоимость изделия</th>
+            </tr>
+            </thead>
+            <tr data-ng-repeat="flower in flowers1">
+                <td><input type="checkbox" ng-click="check1((currentPage1-1)*recordsOnPage + $index)" ng-checked="checkInfo1[(currentPage1-1)*recordsOnPage + $index].isChecked"></td>
+                <!--<td>здесь будет картинка</td>-->
+                <td><img ng-src="flowers_photo/{{flower.picture}}" style="width: 50px; height: 50px;"></td>
+                <td> {{flower.name}}</td>
+                <td> {{flower.description}}</td>
+                <td> {{flower.cost}}</td>
+                <td><input type="number" ng-model="checkInfo1[(currentPage1-1)*recordsOnPage + $index].count"
+                           ng-disabled="!checkInfo1[(currentPage1-1)*recordsOnPage + $index].isChecked"
+                           ng-change="getTotalCost()" min="1"></td>
+                <!--ng-change="setCount((currentPage-1)*recordsOnPage + $index)"-->
+                <!--<td>{{checkInfo[(currentPage-1)*recordsOnPage + $index].cost}}</td>-->
+                <td>{{checkInfo1[(currentPage1-1)*recordsOnPage + $index].count * flower.cost}}</td>
+            </tr>
+        </table>
 
-            <li ng-repeat="i in range" ng-class="{active : currentPage == i}" id="pagination{{i}}">
-                <a href="javascript:void(0)" ng-click="getRecords.doClick(i)">{{i}}</a>
-            </li>
+        <!--постраничная навигация-->
+        <div class="page-menu" id="pagination">
+            <ul class="pagination">
+                <li ng-show="currentPage1 == 1" class="disabled"><a href="">Первая</a></li>
+                <li ng-show="currentPage1 == 1" class="disabled"><a href="">&laquo;</a></li>
+                <li ng-show="currentPage1 != 1" ng-class="isFirstDisabled()"><a href="javascript:void(0)"
+                                                                               ng-click="getRecords.doClick1(1)">Первая</a>
+                </li>
+                <li ng-show="currentPage1 != 1" ng-class="isPrevDisabled()"><a href="javascript:void(0)"
+                                                                              ng-click="getRecords.doClick1(currentPage1-1)">&laquo;</a>
+                </li>
 
-            <li ng-show="currentPage != totalPages" ng-class="isNextDisabled()"><a href="javascript:void(0)"
-                                                                                   ng-click="getRecords.doClick(currentPage+1)">&raquo;</a>
-            </li>
-            <li ng-show="currentPage != totalPages" ng-class="isLastDisabled()"><a href="javascript:void(0)"
-                                                                                   ng-click="getRecords.doClick(totalPages)">Последняя</a>
-            </li>
-            <li ng-show="currentPage == totalPages" class="disabled"><a href="">&raquo;</a></li>
-            <li ng-show="currentPage == totalPages" class="disabled"><a href="">Последняя</a></li>
-        </ul>
+                <li ng-repeat="i in range1" ng-class="{active : currentPage1 == i}" id="pagination{{i}}">
+                    <a href="javascript:void(0)" ng-click="getRecords.doClick1(i)">{{i}}</a>
+                </li>
+
+                <li ng-show="currentPage1 != totalPages1" ng-class="isNextDisabled()"><a href="javascript:void(0)"
+                                                                                       ng-click="getRecords.doClick1(currentPage1+1)">&raquo;</a>
+                </li>
+                <li ng-show="currentPage1 != totalPages1" ng-class="isLastDisabled()"><a href="javascript:void(0)"
+                                                                                       ng-click="getRecords.doClick1(totalPages1)">Последняя</a>
+                </li>
+                <li ng-show="currentPage1 == totalPages1" class="disabled"><a href="">&raquo;</a></li>
+                <li ng-show="currentPage1 == totalPages1" class="disabled"><a href="">Последняя</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div ng-if="selected == 2">
+        <table class="table" id="table">
+            <thead>
+            <tr class="warning">
+                <th></th>
+                <th>Фото</th>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Стоимость за 1шт.</th>
+                <th>Количество</th>
+                <th>Суммарная стоимость изделия</th>
+            </tr>
+            </thead>
+            <tr data-ng-repeat="flower in flowers2">
+                <td><input type="checkbox" ng-click="check2((currentPage2-1)*recordsOnPage + $index)" ng-checked="checkInfo2[(currentPage2-1)*recordsOnPage + $index].isChecked"></td>
+                <!--<td>здесь будет картинка</td>-->
+                <td><img ng-src="flowers_photo/{{flower.picture}}" style="width: 50px; height: 50px;"></td>
+                <td> {{flower.name}}</td>
+                <td> {{flower.description}}</td>
+                <td> {{flower.cost}}</td>
+                <td><input type="number" ng-model="checkInfo2[(currentPage2-1)*recordsOnPage + $index].count"
+                           ng-disabled="!checkInfo2[(currentPage2-1)*recordsOnPage + $index].isChecked"
+                           ng-change="getTotalCost()" min="1"></td>
+                <!--ng-change="setCount((currentPage-1)*recordsOnPage + $index)"-->
+                <!--<td>{{checkInfo[(currentPage-1)*recordsOnPage + $index].cost}}</td>-->
+                <td>{{checkInfo2[(currentPage2-1)*recordsOnPage + $index].count * flower.cost}}</td>
+            </tr>
+        </table>
+
+        <!--постраничная навигация-->
+        <div class="page-menu" id="pagination">
+            <ul class="pagination">
+                <li ng-show="currentPage2 == 1" class="disabled"><a href="">Первая</a></li>
+                <li ng-show="currentPage2 == 1" class="disabled"><a href="">&laquo;</a></li>
+                <li ng-show="currentPage2 != 1" ng-class="isFirstDisabled()"><a href="javascript:void(0)"
+                                                                                ng-click="getRecords.doClick2(1)">Первая</a>
+                </li>
+                <li ng-show="currentPage2 != 1" ng-class="isPrevDisabled()"><a href="javascript:void(0)"
+                                                                               ng-click="getRecords.doClick2(currentPage2-1)">&laquo;</a>
+                </li>
+
+                <li ng-repeat="i in range2" ng-class="{active : currentPage2 == i}" id="pagination{{i}}">
+                    <a href="javascript:void(0)" ng-click="getRecords.doClick2(i)">{{i}}</a>
+                </li>
+
+                <li ng-show="currentPage2 != totalPages2" ng-class="isNextDisabled()"><a href="javascript:void(0)"
+                                                                                         ng-click="getRecords.doClick2(currentPage2+1)">&raquo;</a>
+                </li>
+                <li ng-show="currentPage2 != totalPages2" ng-class="isLastDisabled()"><a href="javascript:void(0)"
+                                                                                         ng-click="getRecords.doClick2(totalPages2)">Последняя</a>
+                </li>
+                <li ng-show="currentPage2 == totalPages2" class="disabled"><a href="">&raquo;</a></li>
+                <li ng-show="currentPage2 == totalPages2" class="disabled"><a href="">Последняя</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div ng-if="selected == 3">
+        <table class="table" id="table">
+            <thead>
+            <tr class="warning">
+                <th></th>
+                <th>Фото</th>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Стоимость за 1шт.</th>
+                <th>Количество</th>
+                <th>Суммарная стоимость изделия</th>
+            </tr>
+            </thead>
+            <tr data-ng-repeat="flower in flowers3">
+                <td><input type="checkbox" ng-click="check3((currentPage3-1)*recordsOnPage + $index)" ng-checked="checkInfo3[(currentPage3-1)*recordsOnPage + $index].isChecked"></td>
+                <!--<td>здесь будет картинка</td>-->
+                <td><img ng-src="flowers_photo/{{flower.picture}}" style="width: 50px; height: 50px;"></td>
+                <td> {{flower.name}}</td>
+                <td> {{flower.description}}</td>
+                <td> {{flower.cost}}</td>
+                <td><input type="number" ng-model="checkInfo3[(currentPage3-1)*recordsOnPage + $index].count"
+                           ng-disabled="!checkInfo3[(currentPage3-1)*recordsOnPage + $index].isChecked"
+                           ng-change="getTotalCost()" min="1"></td>
+                <!--ng-change="setCount((currentPage-1)*recordsOnPage + $index)"-->
+                <!--<td>{{checkInfo[(currentPage-1)*recordsOnPage + $index].cost}}</td>-->
+                <td>{{checkInfo3[(currentPage3-1)*recordsOnPage + $index].count * flower.cost}}</td>
+            </tr>
+        </table>
+
+        <!--постраничная навигация-->
+        <div class="page-menu" id="pagination">
+            <ul class="pagination">
+                <li ng-show="currentPage3 == 1" class="disabled"><a href="">Первая</a></li>
+                <li ng-show="currentPage3 == 1" class="disabled"><a href="">&laquo;</a></li>
+                <li ng-show="currentPage3 != 1" ng-class="isFirstDisabled()"><a href="javascript:void(0)"
+                                                                                ng-click="getRecords.doClick3(1)">Первая</a>
+                </li>
+                <li ng-show="currentPage3 != 1" ng-class="isPrevDisabled()"><a href="javascript:void(0)"
+                                                                               ng-click="getRecords.doClick3(currentPage3-1)">&laquo;</a>
+                </li>
+
+                <li ng-repeat="i in range3" ng-class="{active : currentPage3 == i}" id="pagination{{i}}">
+                    <a href="javascript:void(0)" ng-click="getRecords.doClick3(i)">{{i}}</a>
+                </li>
+
+                <li ng-show="currentPage3 != totalPages3" ng-class="isNextDisabled()"><a href="javascript:void(0)"
+                                                                                         ng-click="getRecords.doClick3(currentPage3+1)">&raquo;</a>
+                </li>
+                <li ng-show="currentPage3 != totalPages3" ng-class="isLastDisabled()"><a href="javascript:void(0)"
+                                                                                         ng-click="getRecords.doClick3(totalPages3)">Последняя</a>
+                </li>
+                <li ng-show="currentPage3 == totalPages3" class="disabled"><a href="">&raquo;</a></li>
+                <li ng-show="currentPage3 == totalPages3" class="disabled"><a href="">Последняя</a></li>
+            </ul>
+        </div>
     </div>
 </div>

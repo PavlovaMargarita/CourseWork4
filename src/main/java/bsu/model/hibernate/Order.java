@@ -44,8 +44,14 @@ public class Order {
 //                    nullable = false, updatable = false) })
 //    private List<Flower> flowerList;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<OrderElement> flowerList;
+    @OneToMany(mappedBy = "order1", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<OrderElement> flowerList1;
+
+    @OneToMany(mappedBy = "order2", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<OrderElement> flowerList2;
+
+    @OneToMany(mappedBy = "order3", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<OrderElement> flowerList3;
 
 
     public Long getId() {
@@ -96,12 +102,28 @@ public class Order {
         this.date = date;
     }
 
-    public List<OrderElement> getFlowerList() {
-        return flowerList;
+    public List<OrderElement> getFlowerList1() {
+        return flowerList1;
     }
 
-    public void setFlowerList(List<OrderElement> flowerList) {
-        this.flowerList = flowerList;
+    public void setFlowerList1(List<OrderElement> flowerList1) {
+        this.flowerList1 = flowerList1;
+    }
+
+    public List<OrderElement> getFlowerList2() {
+        return flowerList2;
+    }
+
+    public void setFlowerList2(List<OrderElement> flowerList2) {
+        this.flowerList2 = flowerList2;
+    }
+
+    public List<OrderElement> getFlowerList3() {
+        return flowerList3;
+    }
+
+    public void setFlowerList3(List<OrderElement> flowerList3) {
+        this.flowerList3 = flowerList3;
     }
 
     public User getConfirmationManager() {

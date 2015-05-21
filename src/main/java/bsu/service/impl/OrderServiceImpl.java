@@ -139,12 +139,30 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(OrderStatusEnum.NEW);
         order.setDate(new java.sql.Date((new Date()).getTime()));
         order = orderRepository.save(order);
-        for(OrderElementDto orderElementDto : orderDto.getFlowerList()){
+        for(OrderElementDto orderElementDto : orderDto.getFlowerList1()){
             OrderElement orderElement = new OrderElement();
             orderElement.setCount(orderElementDto.getCount());
             Flower flower = flowerRepository.findOne(orderElementDto.getFlowerId());
             orderElement.setFlower(flower);
-            orderElement.setOrder(order);
+            orderElement.setOrder1(order);
+            orderElementRepository.save(orderElement);
+        }
+
+        for(OrderElementDto orderElementDto : orderDto.getFlowerList2()){
+            OrderElement orderElement = new OrderElement();
+            orderElement.setCount(orderElementDto.getCount());
+            Flower flower = flowerRepository.findOne(orderElementDto.getFlowerId());
+            orderElement.setFlower(flower);
+            orderElement.setOrder2(order);
+            orderElementRepository.save(orderElement);
+        }
+
+        for(OrderElementDto orderElementDto : orderDto.getFlowerList3()){
+            OrderElement orderElement = new OrderElement();
+            orderElement.setCount(orderElementDto.getCount());
+            Flower flower = flowerRepository.findOne(orderElementDto.getFlowerId());
+            orderElement.setFlower(flower);
+            orderElement.setOrder3(order);
             orderElementRepository.save(orderElement);
         }
 
@@ -157,12 +175,26 @@ public class OrderServiceImpl implements OrderService {
         orderDto.setCustomer(order.getCustomer().getFirstName() + " " + order.getCustomer().getLastName());
         orderDto.setDate(order.getDate());
 //        orderDto.setDeliveryManager(order.getDeliveryManager().getFirstName() + " " + order.getDeliveryManager().getLastName());
-        List<OrderElement> orderElements = order.getFlowerList();
-        List<OrderElementDto> orderElementDtoList = new ArrayList<>();
-        for(OrderElement orderElement : orderElements){
-            orderElementDtoList.add(convertToOrderElementDto(orderElement));
+        List<OrderElement> orderElements1 = order.getFlowerList1();
+        List<OrderElementDto> orderElementDtoList1 = new ArrayList<>();
+        for(OrderElement orderElement : orderElements1){
+            orderElementDtoList1.add(convertToOrderElementDto(orderElement));
         }
-        orderDto.setFlowerList(orderElementDtoList);
+        orderDto.setFlowerList1(orderElementDtoList1);
+
+        List<OrderElement> orderElements2 = order.getFlowerList2();
+        List<OrderElementDto> orderElementDtoList2 = new ArrayList<>();
+        for(OrderElement orderElement : orderElements2){
+            orderElementDtoList2.add(convertToOrderElementDto(orderElement));
+        }
+        orderDto.setFlowerList2(orderElementDtoList2);
+
+        List<OrderElement> orderElements3 = order.getFlowerList3();
+        List<OrderElementDto> orderElementDtoList3 = new ArrayList<>();
+        for(OrderElement orderElement : orderElements3){
+            orderElementDtoList3.add(convertToOrderElementDto(orderElement));
+        }
+        orderDto.setFlowerList3(orderElementDtoList3);
 //        orderDto.setHandlerManager(order.getHandlerManager().getFirstName() + " " + order.getHandlerManager().getLastName());
         orderDto.setStatus(order.getStatus());
 
@@ -179,8 +211,9 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderElementDto convertToOrderElementDto(OrderElement orderElement){
         OrderElementDto orderElementDto = new OrderElementDto();
-        orderElementDto.setFlowerName(orderElement.getFlower().getDescription());
+        orderElementDto.setFlowerName(orderElement.getFlower().getName());
         orderElementDto.setCount(orderElement.getCount());
+        orderElementDto.setFlowerDescription(orderElement.getFlower().getDescription());
         return orderElementDto;
     }
 

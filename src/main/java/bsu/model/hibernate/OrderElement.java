@@ -18,8 +18,16 @@ public class OrderElement {
     private Integer count;
 
     @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
+    @JoinColumn(name = "order1_id", nullable = true)
+    private Order order1;
+
+    @ManyToOne
+    @JoinColumn(name = "order2_id", nullable = true)
+    private Order order2;
+
+    @ManyToOne
+    @JoinColumn(name = "order3_id", nullable = true)
+    private Order order3;
 
     public Long getId() {
         return id;
@@ -45,11 +53,27 @@ public class OrderElement {
         this.count = count;
     }
 
-    public Order getOrder() {
-        return order;
+    public Order getOrder1() {
+        return order1;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setOrder1(Order order1) {
+        this.order1 = order1;
+    }
+
+    public Order getOrder2() {
+        return order2;
+    }
+
+    public void setOrder2(Order order2) {
+        this.order2 = order2;
+    }
+
+    public Order getOrder3() {
+        return order3;
+    }
+
+    public void setOrder3(Order order3) {
+        this.order3 = order3;
     }
 }

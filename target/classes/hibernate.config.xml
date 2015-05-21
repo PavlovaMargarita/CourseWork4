@@ -14,5 +14,7 @@
         <mapping class="bsu.model.hibernate.Flower" />
         <mapping class="bsu.model.hibernate.Order" />
         <mapping class="bsu.model.hibernate.User" />
+        <mapping class="bsu.model.hibernate.OrderElement" />
+        <mapping class="bsu.model.hibernate.Rules" />
     </session-factory>
 </hibernate-configuration>

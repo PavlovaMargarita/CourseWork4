@@ -16,7 +16,9 @@ public class OrderDto {
     private String handlerManager;
     private String deliveryManager;
     private Date date;
-    private List<OrderElementDto> flowerList;
+    private List<OrderElementDto> flowerList1;
+    private List<OrderElementDto> flowerList2;
+    private List<OrderElementDto> flowerList3;
     private CustomerInformation customerInformation;
 
     public OrderDto(){
@@ -79,12 +81,28 @@ public class OrderDto {
         this.date = date;
     }
 
-    public List<OrderElementDto> getFlowerList() {
-        return flowerList;
+    public List<OrderElementDto> getFlowerList1() {
+        return flowerList1;
     }
 
-    public void setFlowerList(List<OrderElementDto> flowerList) {
-        this.flowerList = flowerList;
+    public void setFlowerList1(List<OrderElementDto> flowerList1) {
+        this.flowerList1 = flowerList1;
+    }
+
+    public List<OrderElementDto> getFlowerList2() {
+        return flowerList2;
+    }
+
+    public void setFlowerList2(List<OrderElementDto> flowerList2) {
+        this.flowerList2 = flowerList2;
+    }
+
+    public List<OrderElementDto> getFlowerList3() {
+        return flowerList3;
+    }
+
+    public void setFlowerList3(List<OrderElementDto> flowerList3) {
+        this.flowerList3 = flowerList3;
     }
 
     public CustomerInformation getCustomerInformation() {

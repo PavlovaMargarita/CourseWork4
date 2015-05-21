@@ -19,8 +19,14 @@ app.controller("orderListController", function ($scope, $rootScope, $http, Pager
         for(var i = 0; i < $scope.orders.length; i++){
             $scope.orders[i].status = findRusStatusAnalogue($scope.orders[i].status, $rootScope);
             $scope.orders[i].orderDescription = "";
-            for(var j = 0; j < $scope.orders[i].flowerList.length; j++){
-                $scope.orders[i].orderDescription += ($scope.orders[i].flowerList[j].flowerName + " - " + $scope.orders[i].flowerList[j].count + "шт.; ");
+            for(var j = 0; j < $scope.orders[i].flowerList1.length; j++){
+                $scope.orders[i].orderDescription += ($scope.orders[i].flowerList1[j].flowerName + " - " + $scope.orders[i].flowerList1[j].count + "шт.; ");
+            }
+            for(var j = 0; j < $scope.orders[i].flowerList2.length; j++){
+                $scope.orders[i].orderDescription += ($scope.orders[i].flowerList2[j].flowerName + " - " + $scope.orders[i].flowerList2[j].count + "шт.; ");
+            }
+            for(var j = 0; j < $scope.orders[i].flowerList3.length; j++){
+                $scope.orders[i].orderDescription += ($scope.orders[i].flowerList3[j].flowerName + " - " + $scope.orders[i].flowerList3[j].count + "шт.; ");
             }
 
         }
@@ -73,13 +79,31 @@ app.controller("orderListController", function ($scope, $rootScope, $http, Pager
 
 app.controller("orderCreateController", function ($scope, $rootScope, $http, $location,$routeParams) {
 
-    $scope.orderInfo = $rootScope.orderInfo;
-    var flowerIdArray = [];
-    $scope.indexArray = [];
-    for(var i = 0; i < $scope.orderInfo.length; i++){
-        if($scope.orderInfo[i].isChecked){
-            flowerIdArray.push(Number($scope.orderInfo[i].flowerId));
-            $scope.indexArray.push(i);
+    $scope.orderInfo1 = $rootScope.orderInfo1;
+    $scope.orderInfo2 = $rootScope.orderInfo2;
+    $scope.orderInfo3 = $rootScope.orderInfo3;
+    var flowerIdArray1 = [];
+    var flowerIdArray2 = [];
+    var flowerIdArray3 = [];
+    $scope.indexArray1 = [];
+    $scope.indexArray2 = [];
+    $scope.indexArray3 = [];
+    for(var i = 0; i < $scope.orderInfo1.length; i++){
+        if($scope.orderInfo1[i].isChecked){
+            flowerIdArray1.push(Number($scope.orderInfo1[i].flowerId));
+            $scope.indexArray1.push(i);
+        }
+    }
+    for(var i = 0; i < $scope.orderInfo2.length; i++){
+        if($scope.orderInfo2[i].isChecked){
+            flowerIdArray2.push(Number($scope.orderInfo2[i].flowerId));
+            $scope.indexArray2.push(i);
+        }
+    }
+    for(var i = 0; i < $scope.orderInfo3.length; i++){
+        if($scope.orderInfo3[i].isChecked){
+            flowerIdArray3.push(Number($scope.orderInfo3[i].flowerId));
+            $scope.indexArray3.push(i);
         }
     }
     var getFlowerById = $http({
@@ -88,15 +112,59 @@ app.controller("orderCreateController", function ($scope, $rootScope, $http, $lo
         dataType: 'json',
         contentType: 'application/json',
         mimeType: 'application/json',
-        params: {flowerIdList: flowerIdArray}
+        params: {flowerIdList: flowerIdArray1}
     });
     getFlowerById.success(function (data) {
-        $scope.flowers = data;
-        $scope.order = [];
-        for(var i = 0; i < $scope.flowers.length; i++){
-            for(var j = 0; j < $scope.indexArray.length; j++){
-                if($scope.flowers[i].id == $scope.orderInfo[$scope.indexArray[j]].flowerId){
-                    $scope.order.push({flower:$scope.flowers[i], count: $scope.orderInfo[$scope.indexArray[j]].count});
+        $scope.flowers1 = data;
+        $scope.order1 = [];
+        for(var i = 0; i < $scope.flowers1.length; i++){
+            for(var j = 0; j < $scope.indexArray1.length; j++){
+                if($scope.flowers1[i].id == $scope.orderInfo1[$scope.indexArray1[j]].flowerId){
+                    $scope.order1.push({flower:$scope.flowers1[i], count: $scope.orderInfo1[$scope.indexArray1[j]].count});
+                    break;
+                }
+            }
+        }
+
+    });
+
+    getFlowerById = $http({
+        method: "get",
+        url: host + "/flower/flowerListById",
+        dataType: 'json',
+        contentType: 'application/json',
+        mimeType: 'application/json',
+        params: {flowerIdList: flowerIdArray2}
+    });
+    getFlowerById.success(function (data) {
+        $scope.flowers2 = data;
+        $scope.order2 = [];
+        for(var i = 0; i < $scope.flowers2.length; i++){
+            for(var j = 0; j < $scope.indexArray2.length; j++){
+                if($scope.flowers2[i].id == $scope.orderInfo2[$scope.indexArray2[j]].flowerId){
+                    $scope.order2.push({flower:$scope.flowers2[i], count: $scope.orderInfo2[$scope.indexArray2[j]].count});
+                    break;
+                }
+            }
+        }
+
+    });
+
+    getFlowerById = $http({
+        method: "get",
+        url: host + "/flower/flowerListById",
+        dataType: 'json',
+        contentType: 'application/json',
+        mimeType: 'application/json',
+        params: {flowerIdList: flowerIdArray3}
+    });
+    getFlowerById.success(function (data) {
+        $scope.flowers3 = data;
+        $scope.order3 = [];
+        for(var i = 0; i < $scope.flowers3.length; i++){
+            for(var j = 0; j < $scope.indexArray3.length; j++){
+                if($scope.flowers3[i].id == $scope.orderInfo3[$scope.indexArray3[j]].flowerId){
+                    $scope.order3.push({flower:$scope.flowers3[i], count: $scope.orderInfo3[$scope.indexArray3[j]].count});
                     break;
                 }
             }
@@ -105,15 +173,25 @@ app.controller("orderCreateController", function ($scope, $rootScope, $http, $lo
     });
 
     $scope.save = function(){
-        var flowerList = [];
-        for(var i = 0; i < $scope.order.length; i++){
-            flowerList.push({flowerId : $scope.order[i].flower.id, count : $scope.order[i].count});
+        var flowerList1 = [];
+        var flowerList2 = [];
+        var flowerList3 = [];
+        for(var i = 0; i < $scope.order1.length; i++){
+            flowerList1.push({flowerId : $scope.order1[i].flower.id, count : $scope.order1[i].count});
+        }
+        for(var i = 0; i < $scope.order2.length; i++){
+            flowerList2.push({flowerId : $scope.order2[i].flower.id, count : $scope.order2[i].count});
+        }
+        for(var i = 0; i < $scope.order3.length; i++){
+            flowerList3.push({flowerId : $scope.order3[i].flower.id, count : $scope.order3[i].count});
         }
         var response = $http({
             method: "post",
             url: host + "/order/orderCreate",
             data: {
-                flowerList : flowerList
+                flowerList1 : flowerList1,
+                flowerList2 : flowerList2,
+                flowerList3 : flowerList3
             },
             dataType: 'json',
             contentType: 'application/json',
@@ -233,8 +311,14 @@ app.controller("myOrderController", function ($scope, $http, $routeParams, $loca
         for(var i = 0; i < $scope.orders.length; i++){
             $scope.orders[i].status = findRusStatusAnalogue($scope.orders[i].status, $rootScope);
             $scope.orders[i].orderDescription = "";
-            for(var j = 0; j < $scope.orders[i].flowerList.length; j++){
-                $scope.orders[i].orderDescription += ($scope.orders[i].flowerList[j].flowerName + " - " + $scope.orders[i].flowerList[j].count + "шт.; ");
+            for(var j = 0; j < $scope.orders[i].flowerList1.length; j++){
+                $scope.orders[i].orderDescription += ($scope.orders[i].flowerList1[j].flowerName + " - " + $scope.orders[i].flowerList1[j].count + "шт.; ");
+            }
+            for(var j = 0; j < $scope.orders[i].flowerList2.length; j++){
+                $scope.orders[i].orderDescription += ($scope.orders[i].flowerList2[j].flowerName + " - " + $scope.orders[i].flowerList2[j].count + "шт.; ");
+            }
+            for(var j = 0; j < $scope.orders[i].flowerList3.length; j++){
+                $scope.orders[i].orderDescription += ($scope.orders[i].flowerList3[j].flowerName + " - " + $scope.orders[i].flowerList3[j].count + "шт.; ");
             }
 
         }

@@ -1,4 +1,4 @@
-app.verifyUserCtrl =  function($scope, verifyNumber, $location, $http, $cookieStore, $modalInstance){
+app.verifyUserCtrl =  function($scope, verifyNumber, user, $location, $http, $cookieStore, $modalInstance){
     $scope.verificationCode = "";
     $scope.verify = function(){
         if($scope.verificationCode == verifyNumber){
@@ -13,17 +13,17 @@ app.verifyUserCtrl =  function($scope, verifyNumber, $location, $http, $cookieSt
                 method: "post",
                 url: host + "/user/userCreateOrUpdate",
                 data: {
-                    id : $scope.user.id,
-                    firstName: $scope.user.firstName,
-                    lastName : $scope.user.lastName,
-                    city : $scope.user.city,
-                    street : $scope.user.street,
-                    house : $scope.user.house,
-                    flat : $scope.user.flat,
-                    phone : $scope.user.phone,
-                    username : $scope.user.username,
-                    password : $scope.user.password,
-                    role : $scope.user.role
+                    id : user.id,
+                    firstName: user.firstName,
+                    lastName : user.lastName,
+                    city : user.city,
+                    street : user.street,
+                    house : user.house,
+                    flat : user.flat,
+                    phone : user.phone,
+                    username : user.username,
+                    password : user.password,
+                    role : user.role
 
                 },
                 dataType: 'json',

@@ -4,6 +4,10 @@
 
         <h3 align="center">Сведения пользователя</h3>
 
+        <div class="form-group" id="error_last_name" style="display: none;">
+            <label class="control-label col-sm-offset-4" style="padding-left: 10px; color: red;">Введите фамилию</label>
+        </div>
+
         <div class="form-group">
             <label class="control-label col-sm-4" for="last_name">Фамилия</label>
 
@@ -12,6 +16,10 @@
                        ng-model="user.lastName"
                        placeholder="Введите фамилию" ng-readonly="readonly"/>
             </div>
+        </div>
+
+        <div class="form-group" id="error_first_name" style="display: none;">
+            <label class="control-label col-sm-offset-4" style="padding-left: 10px; color: red;">Введите имя</label>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-4" for="last_name">Имя</label>
@@ -22,6 +30,9 @@
                        placeholder="Введите имя" ng-readonly="readonly"/>
             </div>
         </div>
+        <div class="form-group" id="error_city" style="display: none;">
+            <label class="control-label col-sm-offset-4" style="padding-left: 10px; color: red;">Введите город</label>
+        </div>
         <div class="form-group">
             <label class="control-label col-sm-4" for="last_name">Город</label>
 
@@ -30,6 +41,9 @@
                        ng-model="user.city"
                        placeholder="Введите город" ng-readonly="readonly" ng-change="changeAddress()"/>
             </div>
+        </div>
+        <div class="form-group" id="error_street" style="display: none;">
+            <label class="control-label col-sm-offset-4" style="padding-left: 10px; color: red;">Введите улицу</label>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-4" for="last_name">Улица</label>
@@ -40,6 +54,9 @@
                        placeholder="Введите улицу" ng-readonly="readonly" ng-change="changeAddress()"/>
             </div>
         </div>
+        <div class="form-group" id="error_house" style="display: none;">
+            <label class="control-label col-sm-offset-4" style="padding-left: 10px; color: red;">Введите дом</label>
+        </div>
         <div class="form-group">
             <label class="control-label col-sm-4" for="last_name">Дом</label>
 
@@ -48,6 +65,9 @@
                        ng-model="user.house"
                        placeholder="Введите дом" ng-readonly="readonly" ng-change="changeAddress()"/>
             </div>
+        </div>
+        <div class="form-group" id="error_flat" style="display: none;">
+            <label class="control-label col-sm-offset-4" style="padding-left: 10px; color: red;">Введите квартиру</label>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-4" for="last_name">Квартира</label>
@@ -64,7 +84,9 @@
             <a href="#" ng-click="openInfoWindow($event, marker)">{{marker.title}}</a>
         </div>
 
-
+        <div class="form-group" id="error_phone" style="display: none;">
+            <label class="control-label col-sm-offset-4" style="padding-left: 10px; color: red;">Введите номер телефона</label>
+        </div>
         <div class="form-group" style="margin-top: 20px;">
             <label class="control-label col-sm-4" for="last_name">Номер телефона</label>
 
@@ -73,6 +95,9 @@
                        ng-model="user.phone"
                        placeholder="Введите номер телефона" ng-readonly="readonly"/>
             </div>
+        </div>
+        <div class="form-group" id="error_username" style="display: none;">
+            <label class="control-label col-sm-offset-4" style="padding-left: 10px; color: red;">Введите логин</label>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-4" for="last_name">Логин</label>
@@ -83,6 +108,9 @@
                        placeholder="Введите логин" ng-readonly="readonly"/>
             </div>
         </div>
+        <div class="form-group" id="error_password" style="display: none;">
+            <label class="control-label col-sm-offset-4" style="padding-left: 10px; color: red;">Введите пароль</label>
+        </div>
         <div class="form-group">
             <label class="control-label col-sm-4" for="last_name">Пароль</label>
 
@@ -92,7 +120,6 @@
                        placeholder="Введите пароль" ng-readonly="readonly"/>
             </div>
         </div>
-
         <div class="form-group" ng-show="function=='create'">
             <label class="control-label col-sm-4" for="last_name">Повторите пароль</label>
 
@@ -118,7 +145,10 @@
             <label class="control-label col-sm-4 label-font-size"></label>
 
             <div class="col-sm-8">
-                <button type="button" class="btn btn-primary col-sm-3" ng-click="save.createVerifyNumber()">
+                <button type="button" class="btn btn-primary col-sm-3" ng-click="save.createVerifyNumber()" ng-if="function=='create'">
+                    Сохранить
+                </button>
+                <button type="button" class="btn btn-primary col-sm-3" ng-click="save.doClick()" ng-if="function!='create'">
                     Сохранить
                 </button>
                 <button type="button" class="btn btn-danger col-sm-offset-1 col-sm-3"

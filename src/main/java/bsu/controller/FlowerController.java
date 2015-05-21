@@ -37,6 +37,22 @@ public class FlowerController {
         return count;
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/bouquetList")
+    @ResponseBody
+    public List<FlowerDto> getBouquetList(@RequestParam("page") Integer page,
+                                         @RequestParam("size") Integer size){
+        List<FlowerDto> result = flowerService.getBouquetList(page, size);
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/bouquetCountList")
+    @ResponseBody
+    public Long getBouquetCountList(){
+        Long count = flowerService.getBouquetCountList();
+        return count;
+    }
+
+
     @RequestMapping(method = RequestMethod.GET, value = "/flowerListById")
     @ResponseBody
     public List<FlowerDto> getFlowerListById(@RequestParam("flowerIdList") List<String> flowerIdList){

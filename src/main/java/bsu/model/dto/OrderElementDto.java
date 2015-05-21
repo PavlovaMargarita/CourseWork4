@@ -2,6 +2,7 @@ package bsu.model.dto;
 
 public class OrderElementDto {
     private String flowerName;
+    private String flowerDescription;
     private Integer count;
     private Long flowerId;
 
@@ -27,5 +28,13 @@ public class OrderElementDto {
 
     public void setFlowerId(Long flowerId) {
         this.flowerId = flowerId;
+    }
+
+    public String getFlowerDescription() {
+        return flowerDescription;
+    }
+
+    public void setFlowerDescription(String flowerDescription) {
+        this.flowerDescription = flowerDescription;
     }
 }

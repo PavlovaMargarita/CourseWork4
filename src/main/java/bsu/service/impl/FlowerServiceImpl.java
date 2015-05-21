@@ -36,6 +36,23 @@ public class FlowerServiceImpl implements FlowerService {
     }
 
     @Override
+    public List<FlowerDto> getBouquetList(Integer page, Integer size) {
+        Pageable pageable = new PageRequest(page - 1, size);
+        List<Flower> flowerList = flowerRepository.getBouquetList(pageable);
+        List<FlowerDto> flowerDtoList = new ArrayList<>();
+        for(Flower flower : flowerList){
+            flowerDtoList.add(convertToFlowerDto(flower));
+        }
+        return flowerDtoList;
+    }
+
+    @Override
+    public Long getBouquetCountList() {
+        Long count = flowerRepository.getBouquetCountList();
+        return count;
+    }
+
+    @Override
     public List<FlowerDto> getFlowerListById(List<Long> flowerIdList) {
         List<Flower> flowerList = flowerRepository.getFlowerListById(flowerIdList);
         List<FlowerDto> flowerDtoList = new ArrayList<>();
@@ -51,6 +68,8 @@ public class FlowerServiceImpl implements FlowerService {
         flowerDto.setDescription(flower.getDescription());
         flowerDto.setCost(flower.getCost());
         flowerDto.setPicture(flower.getPicture());
+        flowerDto.setStyle(flower.getStyle());
+        flowerDto.setName(flower.getName());
         return flowerDto;
     }
 }

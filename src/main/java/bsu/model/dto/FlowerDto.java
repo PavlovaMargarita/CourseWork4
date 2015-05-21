@@ -5,6 +5,8 @@ public class FlowerDto {
     private String description;
     private Integer cost;
     private String picture;
+    private String style;
+    private String name;
 
     public Long getId() {
         return id;
@@ -36,5 +38,21 @@ public class FlowerDto {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

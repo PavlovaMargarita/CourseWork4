@@ -71,32 +71,97 @@ app.controller("userCreateController", function ($scope, $rootScope, $http, $loc
     $scope.location = "53, 27";
 
     $scope.save = {};
-
     $scope.save.createVerifyNumber = function(){
-        var request = $http({
-            method: "get",
-            url: host + "/user/verifyUser",
-            dataType: 'json',
-            contentType: 'application/json',
-            mimeType: 'application/json',
-            params: {phone : $scope.user.phone}
-        });
-        request.success(function (data) {
-            //
-            $scope.verifyNumber = data;
-            var modalInstance = $modal.open({
-                templateUrl: 'pages/verify_user.html',
-                controller: app.verifyUserCtrl,
-                resolve: {
-                    verifyNumber: function(){
-                        return $scope.verifyNumber;
-                    }
-                }
+        var ok = $scope.validateUserData();
+        if(ok) {
+            var request = $http({
+                method: "get",
+                url: host + "/user/verifyUser",
+                dataType: 'json',
+                contentType: 'application/json',
+                mimeType: 'application/json',
+                params: {phone: $scope.user.phone}
             });
-        });
+            request.success(function (data) {
+
+                $scope.verifyNumber = data;
+                //$scope.verifyNumber = 123456;
+                var modalInstance = $modal.open({
+                    templateUrl: 'pages/verify_user.html',
+                    controller: app.verifyUserCtrl,
+                    resolve: {
+                        verifyNumber: function () {
+                            return $scope.verifyNumber;
+                        },
+                        user: function () {
+                            return $scope.user;
+                        }
+                    }
+                });
+            });
+        }
     };
 
+    $scope.validateUserData = function(){
+        var ok = true;
+        if(!$scope.user || !$scope.user.lastName){
+            $("#error_last_name").css("display", "inline");
+            ok = false;
+        } else {
+            $("#error_last_name").css("display", "none");
+        }
+        if(!$scope.user || !$scope.user.firstName){
+            $("#error_first_name").css("display", "inline");
+            ok = false;
+        } else {
+            $("#error_first_name").css("display", "none");
+        }
+        if(!$scope.user || !$scope.user.city){
+            $("#error_city").css("display", "inline");
+            ok = false;
+        } else {
+            $("#error_city").css("display", "none");
+        }
+        if(!$scope.user || !$scope.user.street){
+            $("#error_street").css("display", "inline");
+            ok = false;
+        } else {
+            $("#error_street").css("display", "none");
+        }
+        if(!$scope.user || !$scope.user.house){
+            $("#error_house").css("display", "inline");
+            ok = false;
+        } else {
+            $("#error_house").css("display", "none");
+        }
+        if(!$scope.user || !$scope.user.flat){
+            $("#error_flat").css("display", "inline");
+            ok = false;
+        } else {
+            $("#error_flat").css("display", "none");
+        }
+        if(!$scope.user || !$scope.user.phone){
+            $("#error_phone").css("display", "inline");
+            ok = false;
+        } else {
+            $("#error_phone").css("display", "none");
+        }
+        if(!$scope.user || !$scope.user.username){
+            $("#error_username").css("display", "inline");
+            ok = false;
+        } else {
+            $("#error_username").css("display", "none");
+        }
+        if(!$scope.user || !$scope.user.password){
+            $("#error_password").css("display", "inline");
+            ok = false;
+        } else {
+            $("#error_password").css("display", "none");
+        }
 
+        return ok;
+
+    };
     $scope.cancel = {};
     $scope.cancel.doClick = function () {
         $location.path('/companyList');

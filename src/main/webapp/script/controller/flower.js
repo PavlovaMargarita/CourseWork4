@@ -237,18 +237,27 @@ app.controller("flowerListController", function ($scope, $rootScope, $http, Page
     $scope.getTotalCost = function(){
         var sum = 0;
         for(var i=0;i <  $scope.checkInfo1.length; i++){
+            if(!Number($scope.checkInfo1[i].count)){
+                $scope.checkInfo1[i].count = 0;
+            }
             if($scope.checkInfo1[i].isChecked) {
                 sum += ($scope.checkInfo1[i].cost * $scope.checkInfo1[i].count);
             }
         }
 
         for(var i=0;i <  $scope.checkInfo2.length; i++){
+            if(!Number($scope.checkInfo2[i].count)){
+                $scope.checkInfo2[i].count = 0;
+            }
             if($scope.checkInfo2[i].isChecked) {
                 sum += ($scope.checkInfo2[i].cost * $scope.checkInfo2[i].count);
             }
         }
 
         for(var i=0;i <  $scope.checkInfo3.length; i++){
+            if(!Number($scope.checkInfo3[i].count)){
+                $scope.checkInfo3[i].count = 0;
+            }
             if($scope.checkInfo3[i].isChecked) {
                 sum += ($scope.checkInfo3[i].cost * $scope.checkInfo3[i].count);
             }

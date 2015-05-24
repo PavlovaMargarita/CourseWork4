@@ -58,7 +58,6 @@ app.controller("userListController", function ($scope, $rootScope, $http, PagerS
 });
 
 app.controller("userCreateController", function ($scope, $rootScope, $http, $location, $cookieStore, $modal) {
-
     $scope.readonly = false;
     $scope.user = {};
     $scope.function = "create";
@@ -74,18 +73,18 @@ app.controller("userCreateController", function ($scope, $rootScope, $http, $loc
     $scope.save.createVerifyNumber = function(){
         var ok = $scope.validateUserData();
         if(ok) {
-            var request = $http({
-                method: "get",
-                url: host + "/user/verifyUser",
-                dataType: 'json',
-                contentType: 'application/json',
-                mimeType: 'application/json',
-                params: {phone: $scope.user.phone}
-            });
-            request.success(function (data) {
+            //var request = $http({
+            //    method: "get",
+            //    url: host + "/user/verifyUser",
+            //    dataType: 'json',
+            //    contentType: 'application/json',
+            //    mimeType: 'application/json',
+            //    params: {phone: $scope.user.phone}
+            //});
+            //request.success(function (data) {
 
-                $scope.verifyNumber = data;
-                //$scope.verifyNumber = 123456;
+                //$scope.verifyNumber = data;
+                $scope.verifyNumber = 123456;
                 var modalInstance = $modal.open({
                     templateUrl: 'pages/verify_user.html',
                     controller: app.verifyUserCtrl,
@@ -98,7 +97,7 @@ app.controller("userCreateController", function ($scope, $rootScope, $http, $loc
                         }
                     }
                 });
-            });
+            //});
         }
     };
 
@@ -128,7 +127,7 @@ app.controller("userCreateController", function ($scope, $rootScope, $http, $loc
         } else {
             $("#error_street").css("display", "none");
         }
-        if(!$scope.user || !$scope.user.house){
+        if(!$scope.user || !$scope.user.house || !isNormalInteger($scope.user.house)){
             $("#error_house").css("display", "inline");
             ok = false;
         } else {
@@ -158,10 +157,22 @@ app.controller("userCreateController", function ($scope, $rootScope, $http, $loc
         } else {
             $("#error_password").css("display", "none");
         }
+        if(!$scope.repeatPassword || $scope.user.password != $scope.repeatPassword){
+            $("#error_repeat_password").css("display", "inline");
+            ok = false;
+        } else {
+            $("#error_repeat_password").css("display", "none");
+        }
 
         return ok;
 
     };
+
+    function isNormalInteger(str) {
+        var n = ~~Number(str);
+        return String(n) === str && n > 0;
+    }
+
     $scope.cancel = {};
     $scope.cancel.doClick = function () {
         $location.path('/companyList');

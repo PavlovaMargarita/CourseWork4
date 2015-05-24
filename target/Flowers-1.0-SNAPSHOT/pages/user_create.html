@@ -91,9 +91,9 @@
             <label class="control-label col-sm-4" for="last_name">Номер телефона</label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control " name="phone" id="phone"
+                <input type="number" class="form-control " name="phone" id="phone"
                        ng-model="user.phone"
-                       placeholder="Введите номер телефона" ng-readonly="readonly"/>
+                       placeholder="Введите номер телефона" ng-readonly="readonly" max="375449999999" min="375291111111"/>
             </div>
         </div>
         <div class="form-group" id="error_username" style="display: none;">
@@ -120,12 +120,15 @@
                        placeholder="Введите пароль" ng-readonly="readonly"/>
             </div>
         </div>
+        <div class="form-group" id="error_repeat_password" style="display: none;">
+            <label class="control-label col-sm-offset-4" style="padding-left: 10px; color: red;">Введенные пароли не совпадают</label>
+        </div>
         <div class="form-group" ng-show="function=='create'">
             <label class="control-label col-sm-4" for="last_name">Повторите пароль</label>
 
             <div class="col-sm-4">
                 <input type="password" class="form-control "
-                       ng-model="repeatePassword"
+                       ng-model="repeatPassword"
                        placeholder="Введите пароль" ng-readonly="readonly"/>
             </div>
         </div>

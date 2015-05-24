@@ -48,7 +48,7 @@
                 <td> {{flower.cost}}</td>
                 <td><input type="number" ng-model="checkInfo1[(currentPage1-1)*recordsOnPage + $index].count"
                            ng-disabled="!checkInfo1[(currentPage1-1)*recordsOnPage + $index].isChecked"
-                           ng-change="getTotalCost()" min="1"></td>
+                           ng-change="getTotalCost()" min="1" step="1" pattern="^[0-9]"></td>
                 <!--ng-change="setCount((currentPage-1)*recordsOnPage + $index)"-->
                 <!--<td>{{checkInfo[(currentPage-1)*recordsOnPage + $index].cost}}</td>-->
                 <td>{{checkInfo1[(currentPage1-1)*recordsOnPage + $index].count * flower.cost}}</td>

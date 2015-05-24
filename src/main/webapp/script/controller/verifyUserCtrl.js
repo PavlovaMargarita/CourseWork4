@@ -1,4 +1,4 @@
-app.verifyUserCtrl =  function($scope, verifyNumber, user, $location, $http, $cookieStore, $modalInstance){
+app.verifyUserCtrl =  function($scope, verifyNumber, user, $location, $http, $cookieStore, $modalInstance, $rootScope){
     $scope.verificationCode = "";
     $scope.verify = function(){
         if($scope.verificationCode == verifyNumber){
@@ -31,6 +31,7 @@ app.verifyUserCtrl =  function($scope, verifyNumber, user, $location, $http, $co
                 mimeType: 'application/json'
             });
             response.success(function () {
+                $modalInstance.close();
                 if($rootScope.role) {
                     $location.path('/userList');
                     $location.replace();

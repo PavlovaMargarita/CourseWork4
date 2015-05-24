@@ -88,89 +88,110 @@ app.controller("orderCreateController", function ($scope, $rootScope, $http, $lo
     $scope.indexArray1 = [];
     $scope.indexArray2 = [];
     $scope.indexArray3 = [];
+    $scope.flowers1 = [];
+    $scope.order1 = [];
+    $scope.flowers2 = [];
+    $scope.order2 = [];
+    $scope.flowers3 = [];
+    $scope.order3 = [];
     for(var i = 0; i < $scope.orderInfo1.length; i++){
-        if($scope.orderInfo1[i].isChecked){
+        if($scope.orderInfo1[i].isChecked && $scope.orderInfo1[i].count > 0){
             flowerIdArray1.push(Number($scope.orderInfo1[i].flowerId));
             $scope.indexArray1.push(i);
         }
     }
     for(var i = 0; i < $scope.orderInfo2.length; i++){
-        if($scope.orderInfo2[i].isChecked){
+        if($scope.orderInfo2[i].isChecked && $scope.orderInfo2[i].count > 0){
             flowerIdArray2.push(Number($scope.orderInfo2[i].flowerId));
             $scope.indexArray2.push(i);
         }
     }
     for(var i = 0; i < $scope.orderInfo3.length; i++){
-        if($scope.orderInfo3[i].isChecked){
+        if($scope.orderInfo3[i].isChecked && $scope.orderInfo3[i].count > 0){
             flowerIdArray3.push(Number($scope.orderInfo3[i].flowerId));
             $scope.indexArray3.push(i);
         }
     }
-    var getFlowerById = $http({
-        method: "get",
-        url: host + "/flower/flowerListById",
-        dataType: 'json',
-        contentType: 'application/json',
-        mimeType: 'application/json',
-        params: {flowerIdList: flowerIdArray1}
-    });
-    getFlowerById.success(function (data) {
-        $scope.flowers1 = data;
-        $scope.order1 = [];
-        for(var i = 0; i < $scope.flowers1.length; i++){
-            for(var j = 0; j < $scope.indexArray1.length; j++){
-                if($scope.flowers1[i].id == $scope.orderInfo1[$scope.indexArray1[j]].flowerId){
-                    $scope.order1.push({flower:$scope.flowers1[i], count: $scope.orderInfo1[$scope.indexArray1[j]].count});
-                    break;
+
+    if(flowerIdArray1.length > 0) {
+        var getFlowerById = $http({
+            method: "get",
+            url: host + "/flower/flowerListById",
+            dataType: 'json',
+            contentType: 'application/json',
+            mimeType: 'application/json',
+            params: {flowerIdList: flowerIdArray1}
+        });
+        getFlowerById.success(function (data) {
+            $scope.flowers1 = data;
+            $scope.order1 = [];
+            for (var i = 0; i < $scope.flowers1.length; i++) {
+                for (var j = 0; j < $scope.indexArray1.length; j++) {
+                    if ($scope.flowers1[i].id == $scope.orderInfo1[$scope.indexArray1[j]].flowerId) {
+                        $scope.order1.push({
+                            flower: $scope.flowers1[i],
+                            count: $scope.orderInfo1[$scope.indexArray1[j]].count
+                        });
+                        break;
+                    }
                 }
             }
-        }
 
-    });
+        });
+    }
 
-    getFlowerById = $http({
-        method: "get",
-        url: host + "/flower/flowerListById",
-        dataType: 'json',
-        contentType: 'application/json',
-        mimeType: 'application/json',
-        params: {flowerIdList: flowerIdArray2}
-    });
-    getFlowerById.success(function (data) {
-        $scope.flowers2 = data;
-        $scope.order2 = [];
-        for(var i = 0; i < $scope.flowers2.length; i++){
-            for(var j = 0; j < $scope.indexArray2.length; j++){
-                if($scope.flowers2[i].id == $scope.orderInfo2[$scope.indexArray2[j]].flowerId){
-                    $scope.order2.push({flower:$scope.flowers2[i], count: $scope.orderInfo2[$scope.indexArray2[j]].count});
-                    break;
+    if(flowerIdArray2.length > 0) {
+        getFlowerById = $http({
+            method: "get",
+            url: host + "/flower/flowerListById",
+            dataType: 'json',
+            contentType: 'application/json',
+            mimeType: 'application/json',
+            params: {flowerIdList: flowerIdArray2}
+        });
+        getFlowerById.success(function (data) {
+            $scope.flowers2 = data;
+            $scope.order2 = [];
+            for (var i = 0; i < $scope.flowers2.length; i++) {
+                for (var j = 0; j < $scope.indexArray2.length; j++) {
+                    if ($scope.flowers2[i].id == $scope.orderInfo2[$scope.indexArray2[j]].flowerId) {
+                        $scope.order2.push({
+                            flower: $scope.flowers2[i],
+                            count: $scope.orderInfo2[$scope.indexArray2[j]].count
+                        });
+                        break;
+                    }
                 }
             }
-        }
 
-    });
+        });
+    }
 
-    getFlowerById = $http({
-        method: "get",
-        url: host + "/flower/flowerListById",
-        dataType: 'json',
-        contentType: 'application/json',
-        mimeType: 'application/json',
-        params: {flowerIdList: flowerIdArray3}
-    });
-    getFlowerById.success(function (data) {
-        $scope.flowers3 = data;
-        $scope.order3 = [];
-        for(var i = 0; i < $scope.flowers3.length; i++){
-            for(var j = 0; j < $scope.indexArray3.length; j++){
-                if($scope.flowers3[i].id == $scope.orderInfo3[$scope.indexArray3[j]].flowerId){
-                    $scope.order3.push({flower:$scope.flowers3[i], count: $scope.orderInfo3[$scope.indexArray3[j]].count});
-                    break;
+    if(flowerIdArray3.length > 0) {
+        getFlowerById = $http({
+            method: "get",
+            url: host + "/flower/flowerListById",
+            dataType: 'json',
+            contentType: 'application/json',
+            mimeType: 'application/json',
+            params: {flowerIdList: flowerIdArray3}
+        });
+        getFlowerById.success(function (data) {
+            $scope.flowers3 = data;
+            $scope.order3 = [];
+            for (var i = 0; i < $scope.flowers3.length; i++) {
+                for (var j = 0; j < $scope.indexArray3.length; j++) {
+                    if ($scope.flowers3[i].id == $scope.orderInfo3[$scope.indexArray3[j]].flowerId) {
+                        $scope.order3.push({
+                            flower: $scope.flowers3[i],
+                            count: $scope.orderInfo3[$scope.indexArray3[j]].count
+                        });
+                        break;
+                    }
                 }
             }
-        }
-
-    });
+        });
+    }
 
     $scope.save = function(){
         var flowerList1 = [];
